@@ -1,0 +1,41 @@
+{
+  "build": {
+    "content": [
+      {
+        "files": [
+		  "about/*.md",
+          "HEXRAYSDK/**/*.yml",
+          "HEXRAYSDK/**/*.md",
+		  "IDASDK/**/*.md",
+		  "IDASDK/**/*.yml",
+		  "toc.yml",
+		  "*.md"
+        ]
+      },
+    ],
+    "resource": [
+      {
+        "files": [
+          "images/**"
+        ]
+      }
+    ],
+    "dest": "docs",
+    "globalMetadata": {
+      "_enableSearch": "true",
+    },
+	"postProcessors": [
+		"ExtractSearchIndex"
+	],
+    "fileMetadataFiles": [],
+    "template": [
+      "default",
+	  "templates/mathew"
+    ],
+    "markdownEngineName": "markdig",
+    "noLangKeyword": false,
+    "keepFileLink": false,
+    "cleanupCacheHistory": false,
+    "disableGitFeatures": false
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "about/index.html": {
+    "href": "about/index.html",
+    "title": "",
+    "keywords": "该文档由fjqisba个人编写。"
+  },
+  "HEXRAYSDK/HexRaysSDK.html": {
+    "href": "HEXRAYSDK/HexRaysSDK.html",
+    "title": "HexRays SDK简介",
+    "keywords": "HexRays SDK简介 IDA反编译器Hex-Rays是作为IDA的插件而存在的，它可以将IDA反汇编代码转换成类C语言伪代码。 同时官方还提供了一组HexRays SDK，供用户使用。 SDK使用方法很简单，只需要将hexrays.hpp文件包含即可。"
+  },
+  "IDASDK/intro.html": {
+    "href": "IDASDK/intro.html",
+    "title": "Add your introductions here!",
+    "keywords": "Add your introductions here!"
+  },
+  "index.html": {
+    "href": "index.html",
+    "title": "IDA插件开发",
+    "keywords": "IDA插件开发 IDA插件根据版本来划分，大致可分为6.x和7.x两种版本。 IDA 7.x相较于6.x，有以下几点改动: SDK中的函数有较大变化，函数增加、函数减少、函数名称变化。 原先6.x版本idaq.exe使用32位编译的插件模块，idaq64.exe使用64位编译的插件模块。 现在7.x版本ida.exe和ida64.exe都经64位编译，使用的IDA插件模块也都必须使用64位进行编译。 插件的后缀名不再是plw,p64，统一改成dll。 IDA提供的应用SDK分为IDA SDK和HexRays SDK两种"
+  },
+  "README.html": {
+    "href": "README.html",
+    "title": "IDADoc",
+    "keywords": "IDADoc 用于存放IDA相关的资料和文档"
+  }
+}

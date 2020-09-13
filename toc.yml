@@ -1,0 +1,7 @@
+- name: IDA SDK
+  href: IDASDK/
+- name: HexRays SDK
+  href: HEXRAYSDK/
+- name: 关于
+  href: about/
+  homepage: about/index.md
