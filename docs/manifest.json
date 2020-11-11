@@ -18,7 +18,7 @@
       "output": {
         ".html": {
           "relative_path": "HEXRAYSDK/HexRaysSDK.html",
-          "hash": "vMvGf0VDSTeq/2p3R9e9tg=="
+          "hash": "QDv7fn2A3pVAHqHFJkZYcw=="
         }
       },
       "is_incremental": false,
@@ -42,7 +42,7 @@
       "output": {
         ".html": {
           "relative_path": "IDASDK/intro.html",
-          "hash": "IGFjHrigUhdZu4s7c2eO8g=="
+          "hash": "3heJVBWb0oCLjNRBmJve/Q=="
         }
       },
       "is_incremental": false,
@@ -54,7 +54,19 @@
       "output": {
         ".html": {
           "relative_path": "IDASDK/toc.html",
-          "hash": "gB8AESyvNru97tzIZofEEg=="
+          "hash": "vuug4EQ9uB0DhumcujKG2Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "IDASDK/结构体和数据类型.md",
+      "output": {
+        ".html": {
+          "relative_path": "IDASDK/结构体和数据类型.html",
+          "hash": "PIKsdG6tt/vqQ4BgLv1yvQ=="
         }
       },
       "is_incremental": false,
@@ -66,7 +78,7 @@
       "output": {
         ".html": {
           "relative_path": "README.html",
-          "hash": "GSB1WCw2C/QpkhkxLe23QQ=="
+          "hash": "Eb0VOLjEBgngeeyPCTJV+g=="
         }
       },
       "is_incremental": false,
@@ -78,7 +90,7 @@
       "output": {
         ".html": {
           "relative_path": "about/index.html",
-          "hash": "/XuB7RMAMlrVQxEbiXYAug=="
+          "hash": "wMxeGu1qrvCkUH8JEeHc9g=="
         }
       },
       "is_incremental": false,
@@ -90,7 +102,7 @@
       "output": {
         ".html": {
           "relative_path": "index.html",
-          "hash": "BSL2B48bbtiED5WDU45ZHg=="
+          "hash": "kAEWtSYzBdqTXjKncVhEjg=="
         }
       },
       "is_incremental": false,
@@ -121,8 +133,8 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": true,
           "incrementalPhase": "build",
-          "total_file_count": 5,
-          "skipped_file_count": 5
+          "total_file_count": 6,
+          "skipped_file_count": 6
         },
         "TocDocumentProcessor": {
           "can_incremental": false,
