@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>IDA&#33258;&#21160;&#20998;&#26512;&#22120; </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="IDA&#33258;&#21160;&#20998;&#26512;&#22120; ">
+    <meta name="generator" content="docfx 2.56.2.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="ida自动分析器" sourcefile="IDASDK/IDA自动分析器.md" sourcestartlinenumber="1">IDA自动分析器</h1>
+
+<p sourcefile="IDASDK/IDA自动分析器.md" sourcestartlinenumber="3">在auto.hpp中，包含了关于IDA自动分析引擎相关的一些函数。</p>
+<p sourcefile="IDASDK/IDA自动分析器.md" sourcestartlinenumber="5">当加载一个新的二进制文件的时候，IDA的自动分析引擎便会开始工作。</p>
+<p sourcefile="IDASDK/IDA自动分析器.md" sourcestartlinenumber="7">IDA的自动分析器包含多个分析队列，每个队列有各自的优先级。当所有的分析队列都为空的时候IDA就会结束自动分析。</p>
+<p sourcefile="IDASDK/IDA自动分析器.md" sourcestartlinenumber="11">通过头文件中提供的接口，我们可以对自动分析器进行一些控制。</p>
+<h3 id="自动分析器状态" sourcefile="IDASDK/IDA自动分析器.md" sourcestartlinenumber="13">自动分析器状态</h3>
+<p sourcefile="IDASDK/IDA自动分析器.md" sourcestartlinenumber="15">通过<em sourcefile="IDASDK/IDA自动分析器.md" sourcestartlinenumber="15"><strong sourcefile="IDASDK/IDA自动分析器.md" sourcestartlinenumber="15">get_auto_state</strong></em>和<em sourcefile="IDASDK/IDA自动分析器.md" sourcestartlinenumber="15"><strong sourcefile="IDASDK/IDA自动分析器.md" sourcestartlinenumber="15">set_auto_state</strong></em>函数来获取和设置自动分析器的当前状态。</p>
+<p sourcefile="IDASDK/IDA自动分析器.md" sourcestartlinenumber="17">IDA自动分析器有以下几种状态:</p>
+<p sourcefile="IDASDK/IDA自动分析器.md" sourcestartlinenumber="19"><strong sourcefile="IDASDK/IDA自动分析器.md" sourcestartlinenumber="19">AU_NONE</strong>: 占位符,未被使用</p>
+<p sourcefile="IDASDK/IDA自动分析器.md" sourcestartlinenumber="21"><strong sourcefile="IDASDK/IDA自动分析器.md" sourcestartlinenumber="21">AU_UNK</strong>: 无法识别的数据</p>
+<p sourcefile="IDASDK/IDA自动分析器.md" sourcestartlinenumber="23">**AU_CODE:**识别指令</p>
+<p sourcefile="IDASDK/IDA自动分析器.md" sourcestartlinenumber="25"><strong sourcefile="IDASDK/IDA自动分析器.md" sourcestartlinenumber="25">AU_WEAK</strong>:识别指令(由IDA决定)</p>
+<p sourcefile="IDASDK/IDA自动分析器.md" sourcestartlinenumber="27"><strong sourcefile="IDASDK/IDA自动分析器.md" sourcestartlinenumber="27">AU_PROC</strong>:识别函数起始地址</p>
+<p sourcefile="IDASDK/IDA自动分析器.md" sourcestartlinenumber="29"><strong sourcefile="IDASDK/IDA自动分析器.md" sourcestartlinenumber="29">AU_TAIL</strong>:添加函数尾巴</p>
+<p sourcefile="IDASDK/IDA自动分析器.md" sourcestartlinenumber="31"><strong sourcefile="IDASDK/IDA自动分析器.md" sourcestartlinenumber="31">AU_TRSP</strong>:跟踪堆栈指针(尚未被使用)</p>
+<p sourcefile="IDASDK/IDA自动分析器.md" sourcestartlinenumber="33"><strong sourcefile="IDASDK/IDA自动分析器.md" sourcestartlinenumber="33">AU_USED</strong>:重新分析</p>
+<p sourcefile="IDASDK/IDA自动分析器.md" sourcestartlinenumber="35">**AU_TYPE:**应用数据类型</p>
+<p sourcefile="IDASDK/IDA自动分析器.md" sourcestartlinenumber="37">**AU_LIBF:**应用特征码到该地址</p>
+<p sourcefile="IDASDK/IDA自动分析器.md" sourcestartlinenumber="39"><strong sourcefile="IDASDK/IDA自动分析器.md" sourcestartlinenumber="39">AU_LIBF2</strong>:同上，第二遍</p>
+<p sourcefile="IDASDK/IDA自动分析器.md" sourcestartlinenumber="41"><strong sourcefile="IDASDK/IDA自动分析器.md" sourcestartlinenumber="41">AU_LIBF3</strong>:同上，第三遍</p>
+</article>
+          </div>
+          <div class="contribution-panel mobile-hide">
+              <a href="https://github.com/fjqisba/IDADoc/blob/master/IDASDK/IDA&#33258;&#21160;&#20998;&#26512;&#22120;.md/#L1" title="Improve this Doc" class="fab btn-warning pull-right"><i class="glyphicon glyphicon-pencil"></i></a>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

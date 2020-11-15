@@ -9,20 +9,40 @@
     "title": "HexRays SDK简介",
     "keywords": "HexRays SDK简介 IDA反编译器Hex-Rays是作为IDA的插件而存在的，它可以将IDA反汇编代码转换成类C语言伪代码。 同时官方还提供了一组HexRays SDK，供用户使用。 SDK使用方法很简单，只需要将hexrays.hpp文件包含即可。"
   },
-  "IDASDK/intro.html": {
-    "href": "IDASDK/intro.html",
-    "title": "Add your introductions here!",
-    "keywords": "Add your introductions here!"
+  "IDASDK/(auto.hpp)IDA自动分析器.html": {
+    "href": "IDASDK/(auto.hpp)IDA自动分析器.html",
+    "title": "IDA自动分析器",
+    "keywords": "IDA自动分析器 在auto.hpp中，包含了关于IDA自动分析引擎相关的一些函数。 当加载一个新的二进制文件的时候，IDA的自动分析引擎便会开始工作。 IDA的自动分析器包含多个分析队列，每个队列有各自的优先级。当所有的分析队列都为空的时候IDA就会结束自动分析。 通过头文件中提供的接口，我们可以对自动分析器进行一些控制。此接口一般来说用的比较少。。。。。。 获取自动分析引擎状态 有的时候我们需要对自动分析引擎的状态进行判断，因为自动分析引擎的结果可能会影响到插件的使用。这个时候可以使用 auto_is_ok 这个函数。如下代码: #include <ida.hpp> #include <idp.hpp> #include <loader.hpp> #include <kernwin.hpp> #include <auto.hpp> bool idaapi run(size_t) { if (!auto_is_ok() && ask_yn(0, \"The autoanalysis has not finished yet.\\nDo you want to continue?\") < 1) { return false; } //To do...执行功能 msg(\"[IDADemo]:Test\\n\"); return true; }"
+  },
+  "IDASDK/(bytes.hpp)反汇编字节相关.html": {
+    "href": "IDASDK/(bytes.hpp)反汇编字节相关.html",
+    "title": "反汇编字节相关",
+    "keywords": "反汇编字节相关 在bytes.hpp中提供的接口代表着IDA对二进制代码反汇编字节分析的一些结果。 最常用的就是数据读写了。例如 get_byte 、 get_word 、 get_dword 等函数，用于获取指定地址的数据。其中 get_bytes 函数用来获取指定大小的连续数据。 patch_byte 、 patch_word 、 patch_dword 等函数，用于修改指定地址的数据。 set_cmt / append_cmt / get_cmt 函数，用于反汇编窗口添加注释或者获取注释内容。 bin_search2 函数，用于二进制搜索，有两种调用方法，两种方法其实本质是一样的，官方推荐的做法可能是第一种文本模板，文本语法与IDA官方的Alt+B功能相似。 ea_t bin_search2(ea_t start_ea,ea_t end_ea,const compiled_binpat_vec_t &data,int flags); ea_t bin_search2(ea_t start_ea,ea_t end_ea,const uchar *image,const uchar *mask,size_t len,int flags); 使用示例如下: #include <ida.hpp> #include <idp.hpp> #include <loader.hpp> #include <kernwin.hpp> #include <bytes.hpp> bool idaapi run(size_t) { compiled_binpat_vec_t binPat; parse_binpat_str(&binPat, 0x0, \"55 8B EC\", 16); ea_t SearchStartAddr = 0x401000; while (true) { SearchStartAddr= bin_search2(SearchStartAddr, 0x500000, binPat, 0x0); if (SearchStartAddr == BADADDR) { break; } msg(\"[SearchResult]:%a\\n\", SearchStartAddr); SearchStartAddr = SearchStartAddr + 3; } return true; }"
+  },
+  "IDASDK/(entry.hpp)导出函数相关.html": {
+    "href": "IDASDK/(entry.hpp)导出函数相关.html",
+    "title": "导出函数相关",
+    "keywords": "导出函数相关 IDA内部维护着一组entry point数据，其中每个entry point: 有一个地址 有一个名称 可能包含一个序号 导出函数被视为entry point，同时程序的执行入口点和TLS回调函数入口也被视为entry point。 <entry.hpp>中提供了对entry point列表的一些操作。 示例代码如下: #include <ida.hpp> #include <idp.hpp> #include <loader.hpp> #include <kernwin.hpp> #include <entry.hpp> bool idaapi run(size_t) { //获取entry point个数 size_t entryCount = get_entry_qty(); for (unsigned int idx = 0; idx < entryCount; ++idx) { //根据下标来获取序号 uval_t order = get_entry_ordinal(idx); ea_t FuncAddr = get_entry(order); qstring FuncName; get_entry_name(&FuncName, order); //根据序号与函数地址是否相等来判断是否为导出函数 if (order == FuncAddr) { msg(\"[NotExportFunc]:%s--%a\\n\", FuncName.c_str(), FuncAddr); } else { msg(\"[ExportFunc]:%s--%a\\n\", FuncName.c_str(), FuncAddr); } } return true; }"
+  },
+  "IDASDK/Windows下开发环境配置.html": {
+    "href": "IDASDK/Windows下开发环境配置.html",
+    "title": "Windows下开发环境配置:",
+    "keywords": "Windows下开发环境配置: 1.建立一个空的Visual Studio项目，添加IDADemo.cpp文件 2.由于7.0版本以后的IDA插件必须都是64位的，因此编译平台选择x64 3.进行如下设置 配置属性->常规:更改\"配置类型\"为 动态库(.dll) C/C++ -> 常规:添加SDK的include路径到\"附加包含目录\"一栏，比如D:\\idasdk74\\include C/C++ -> 预处理器:添加 __NT__ 链接器 -> 常规:添加SDK的lib库路径到\"附加库目录\"一栏，比如针对ida.exe所写的插件添加D:\\idasdk74\\lib\\x64_win_vc_32，针对ida64.exe所写的插件添加D:\\idasdk74\\lib\\x64_win_vc_64。 链接器 -> 附加依赖项: 添加 ida.lib 到\"附加依赖项\"一栏。 这样一个IDA插件开发环境就搭建好了。 插件模板介绍: 在IDADemo.cpp添加如下模板代码: #include <ida.hpp> #include <idp.hpp> #include <loader.hpp> #include <kernwin.hpp> //以上是导入的SDK头文件 int idaapi init(void) { //IDA在启动的时候会调用每个插件的init函数。 //返回值有三种选项: //PLUGIN_SKIP适合那些不支持的插件，IDA将不会加载该插件 //PLUGIN_OK适合那些执行一次性功能的插件 //PLUGIN_KEEP适合那些需要一直保持功能的插件 return PLUGIN_OK; } void idaapi term(void) { //当结束插件时，一般您可以在此添加一点任务清理的代码。 return; } bool idaapi run(size_t) { //当按下热键时候,执行功能的入口函数 warning(\"Hello, world!\"); return true; } static char comment[] = \"It's a plugin to show Hello world!\"; plugin_t PLUGIN = { IDP_INTERFACE_VERSION, 0, // 插件的一些属性,一般为0即可 init, // initialize term, // terminate. this pointer may be NULL. run, // invoke plugin comment, // 插件的说明,会显示在IDA下方的状态栏中 \"\", // multiline help about the plugin \"Hello, world\", // 插件在列表中显示的名称 \"Alt-F1\" // 插件想要注册的功能快捷键 }; 编译运行该插件后，会显示出提示框Hello,world!"
   },
   "IDASDK/结构体和数据类型.html": {
     "href": "IDASDK/结构体和数据类型.html",
     "title": "结构体和数据类型",
     "keywords": "结构体和数据类型 结构体与IDA中的Structures窗口信息有一定关系。 数据类型与IDA中的Local Types窗口信息有一定关系。 add_struc 用于创建结构体。 tid_t add_struc(uval_t idx, const char *name, bool is_union=false); 参数: idx为结构体的索引，参考的结构体列表，代表列表中的顺序，如果idx为-1，表示添加结构体到列表末尾。 name为结构体的名称，不能为不合法名称，也不可以与数据库已有的名称重复。 is_union表示该结构体是否为联合体。 返回值: 返回值tid_t实际上就是个整数，用于标识唯一的结构体类型。如果返回-1，代表创建结构体失败。 get_struc 通过标识符tid_t索引得到对应的结构体类型信息struc_t。 struc_t* get_struc(tid_t id); get_struc_id /get_struc_name 通过结构体的名称来索引得到对应的结构体ID，或者通过结构体ID索引得到结构体的名称。 tid_t get_struc_id(const char *name); qstring get_struc_name(tid_t id); expand_struc 扩充或者收缩一个结构体 bool expand_struc(struc_t *sptr, ea_t offset, adiff_t delta, bool recalc=true); 参数: sptr表示需要执行操作的结构体。 offset表示结构体的偏移。 delta表示要扩充的字节大小，如果为负数则表示要移除的字节大小。 recalc表示是否重新计算结构体类型被使用的地方。 返回值: 返回true表示函数执行成功。 需要注意的是，一个空的结构体是无法执行expand_struc函数的，可以参考以下代码初始化一个结构体 //name为结构体的名称,size为结构体的大小 tid_t CreateStructure(const char* name, int size) { //已存在相同名称的结构体 tid_t structId = get_struc_id(name); if (structId != BADADDR) { return structId; } structId = add_struc(-1, name); if (structId == BADADDR) { return structId; } struc_t* pStruct = get_struc(structId); char fieldName[64] = { 0 }; for (int n = 0; n < size; ++n) { qsnprintf(fieldName, sizeof(fieldName), \"field_%a\", n); add_struc_member(pStruct, fieldName, n, 0, NULL, 1); } return structId; }"
   },
+  "IDASDK/文件读写.html": {
+    "href": "IDASDK/文件读写.html",
+    "title": "文件读写",
+    "keywords": "文件读写 官方是不建议我们在插件中使用C语言的文件读写接口的。 读写文件相关接口定义在<diskio.hpp>和<fpro.h>中 idadir 函数用于获取IDA自身相关目录 const char *ida_export idadir(const char *subdir); subdir其实只有固定的选择，有以下几种 #define CFG_SUBDIR \"cfg\" #define IDC_SUBDIR \"idc\" #define IDS_SUBDIR \"ids\" #define IDP_SUBDIR \"procs\" #define LDR_SUBDIR \"loaders\" #define SIG_SUBDIR \"sig\" #define TIL_SUBDIR \"til\" #define PLG_SUBDIR \"plugins\" 官方提供了一组几乎和C语言完全一样的接口，供我们读写文件 FILE *qfopen(const char *file, const char *mode); ssize_t qfread(FILE *fp, void *buf, size_t n); ssize_t qfwrite(FILE *fp, const void *buf, size_t n); qoff64_t qftell(FILE *fp); int qfseek(FILE *fp, qoff64_t offset, int whence); int qfclose(FILE *fp); int qflush(FILE *fp); ...... 这里也就不做过多介绍了。 此外，IDA还封装了一些额外的API供我们使用，毕竟光上面那些根本不够用 ssize_t qgetline (qstring *buf, FILE *fp) 此函数一般用来逐行读取文本。"
+  },
   "index.html": {
     "href": "index.html",
     "title": "IDA插件开发",
-    "keywords": "IDA插件开发 IDA插件根据版本来划分，大致可分为6.x和7.x两种版本。 IDA 7.x相较于6.x，有以下几点改动: SDK中的函数有较大变化，函数增加、函数减少、函数名称变化。 原先6.x版本idaq.exe使用32位编译的插件模块，idaq64.exe使用64位编译的插件模块。 现在7.x版本ida.exe和ida64.exe都经64位编译，使用的IDA插件模块也都必须使用64位进行编译。 插件的后缀名不再是plw,p64，统一改成dll。 IDA提供的应用SDK分为IDA SDK和HexRays SDK两种"
+    "keywords": "IDA插件开发 IDA插件根据版本来划分，大致可分为6.x和7.x两种版本。 IDA 7.x相较于6.x，有以下几点改动: SDK中的函数有较大变化，函数增加、函数减少、函数名称变化。 原先6.x版本idaq.exe使用32位编译的插件模块，idaq64.exe使用64位编译的插件模块。 现在7.x版本ida.exe和ida64.exe都经64位编译，使用的IDA插件模块也都必须使用64位进行编译。 插件的后缀名之前32位和64位插件分别是 .plw 和 .p64 ，现在分别是 .dll 和 64.dll 。 IDA提供的应用SDK分为IDA SDK和HexRays SDK两种"
   },
   "README.html": {
     "href": "README.html",

@@ -38,11 +38,47 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "IDASDK/intro.md",
+      "source_relative_path": "IDASDK/(auto.hpp)IDA自动分析器.md",
       "output": {
         ".html": {
-          "relative_path": "IDASDK/intro.html",
-          "hash": "3heJVBWb0oCLjNRBmJve/Q=="
+          "relative_path": "IDASDK/(auto.hpp)IDA自动分析器.html",
+          "hash": "W36v+RhH5S+V1ywKUqONlg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "IDASDK/(bytes.hpp)反汇编字节相关.md",
+      "output": {
+        ".html": {
+          "relative_path": "IDASDK/(bytes.hpp)反汇编字节相关.html",
+          "hash": "PtbA5jcbTQk2zKF5esh04A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "IDASDK/(entry.hpp)导出函数相关.md",
+      "output": {
+        ".html": {
+          "relative_path": "IDASDK/(entry.hpp)导出函数相关.html",
+          "hash": "q8p4o+7fBpTYLGqwp5C9lw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "IDASDK/Windows下开发环境配置.md",
+      "output": {
+        ".html": {
+          "relative_path": "IDASDK/Windows下开发环境配置.html",
+          "hash": "OebQYJHx3KQIUJVFLPVwoQ=="
         }
       },
       "is_incremental": false,
@@ -54,7 +90,19 @@
       "output": {
         ".html": {
           "relative_path": "IDASDK/toc.html",
-          "hash": "vuug4EQ9uB0DhumcujKG2Q=="
+          "hash": "larq0UIakpAx4KYCYgQCdg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "IDASDK/文件读写.md",
+      "output": {
+        ".html": {
+          "relative_path": "IDASDK/文件读写.html",
+          "hash": "u98dE575HMRjaxhI5bdI2g=="
         }
       },
       "is_incremental": false,
@@ -102,7 +150,7 @@
       "output": {
         ".html": {
           "relative_path": "index.html",
-          "hash": "kAEWtSYzBdqTXjKncVhEjg=="
+          "hash": "jV/YDSNhnx/Bddo89R9D7w=="
         }
       },
       "is_incremental": false,
@@ -114,7 +162,7 @@
       "output": {
         ".html": {
           "relative_path": "toc.html",
-          "hash": "9C9O7Wl8Kuv+qHyE6waZCA=="
+          "hash": "u+MIqTaIoohUHspNoPKOJw=="
         }
       },
       "is_incremental": false,
@@ -133,8 +181,8 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": true,
           "incrementalPhase": "build",
-          "total_file_count": 6,
-          "skipped_file_count": 6
+          "total_file_count": 10,
+          "skipped_file_count": 10
         },
         "TocDocumentProcessor": {
           "can_incremental": false,
