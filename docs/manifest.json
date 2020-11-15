@@ -74,6 +74,30 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "IDASDK/(enum.hpp)枚举类型.md",
+      "output": {
+        ".html": {
+          "relative_path": "IDASDK/(enum.hpp)枚举类型.html",
+          "hash": "sXB6EjEeEtwEXcd2llcj7w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "IDASDK/(funcs.hpp)函数相关.md",
+      "output": {
+        ".html": {
+          "relative_path": "IDASDK/(funcs.hpp)函数相关.html",
+          "hash": "GCDTAkhGTAdMQicjxCNG2Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "IDASDK/Windows下开发环境配置.md",
       "output": {
         ".html": {
@@ -90,7 +114,7 @@
       "output": {
         ".html": {
           "relative_path": "IDASDK/toc.html",
-          "hash": "larq0UIakpAx4KYCYgQCdg=="
+          "hash": "+p5oHDinlFkRTFkEC0K6cg=="
         }
       },
       "is_incremental": false,
@@ -181,8 +205,8 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": true,
           "incrementalPhase": "build",
-          "total_file_count": 10,
-          "skipped_file_count": 10
+          "total_file_count": 12,
+          "skipped_file_count": 11
         },
         "TocDocumentProcessor": {
           "can_incremental": false,

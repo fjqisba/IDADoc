@@ -8,5 +8,9 @@
   href: 文件读写.md
 - name: (entry.hpp)导出函数相关
   href: (entry.hpp)导出函数相关.md
+- name: (enum.hpp)枚举类型
+  href: (enum.hpp)枚举类型.md
+- name: (funcs.hpp)函数相关
+  href: (funcs.hpp)函数相关.md
 - name: 结构体和数据类型
   href: 结构体和数据类型.md

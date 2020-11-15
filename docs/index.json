@@ -24,6 +24,16 @@
     "title": "导出函数相关",
     "keywords": "导出函数相关 IDA内部维护着一组entry point数据，其中每个entry point: 有一个地址 有一个名称 可能包含一个序号 导出函数被视为entry point，同时程序的执行入口点和TLS回调函数入口也被视为entry point。 <entry.hpp>中提供了对entry point列表的一些操作。 示例代码如下: #include <ida.hpp> #include <idp.hpp> #include <loader.hpp> #include <kernwin.hpp> #include <entry.hpp> bool idaapi run(size_t) { //获取entry point个数 size_t entryCount = get_entry_qty(); for (unsigned int idx = 0; idx < entryCount; ++idx) { //根据下标来获取序号 uval_t order = get_entry_ordinal(idx); ea_t FuncAddr = get_entry(order); qstring FuncName; get_entry_name(&FuncName, order); //根据序号与函数地址是否相等来判断是否为导出函数 if (order == FuncAddr) { msg(\"[NotExportFunc]:%s--%a\\n\", FuncName.c_str(), FuncAddr); } else { msg(\"[ExportFunc]:%s--%a\\n\", FuncName.c_str(), FuncAddr); } } return true; }"
   },
+  "IDASDK/(enum.hpp)枚举类型.html": {
+    "href": "IDASDK/(enum.hpp)枚举类型.html",
+    "title": "枚举类型",
+    "keywords": "枚举类型 enum.hpp包含了IDA中枚举信息相关的接口。 枚举类型或者位域(bit fields)表示为enum_t，实际上等价于tid_t，代表着一种数据类型的标识符。 IDA内部推测维护着一个枚举类型列表 对枚举类型进行遍历，示例代码如下: #include <ida.hpp> #include <idp.hpp> #include <loader.hpp> #include <kernwin.hpp> #include <enum.hpp> struct MyVisitor:public enum_member_visitor_t { //函数返回非0值,代表终止遍历枚举类型 virtual int idaapi visit_enum_member(const_t cid, uval_t value) { qstring MemberName; get_enum_member_name(&MemberName, cid); msg(\"Member:%s----%d\\n\", MemberName.c_str(), value); return 0; } }; bool idaapi run(size_t) { //获取enum_t个数 size_t enumCount = get_enum_qty(); for (unsigned int idx = 0; idx < enumCount; ++idx) { enum_t enumId = getn_enum(idx); qstring enumName = get_enum_name(enumId); msg(\"%s\\n\", enumName.c_str()); MyVisitor EnumVisitor; for_all_enum_members(enumId, EnumVisitor); msg(\"----\\n\"); } return true; }"
+  },
+  "IDASDK/(funcs.hpp)函数相关.html": {
+    "href": "IDASDK/(funcs.hpp)函数相关.html",
+    "title": "函数相关",
+    "keywords": "函数相关 首先要说明的就是，funcs.hpp所中围绕的主体func_t结构，指的是IDA主程序在汇编代码级别上提取的信息，这些信息是有限的，而IDA F5插件则是在这些信息基础之上更进一步的语义解析，二者有所不同。 遍历IDA中所有的函数，代码如下: #include <ida.hpp> #include <idp.hpp> #include <loader.hpp> #include <kernwin.hpp> #include <funcs.hpp> bool idaapi run(size_t) { size_t funcCount= get_func_qty(); for (unsigned int idx = 0; idx < funcCount; ++idx) { func_t* pFunc = getn_func(idx); qstring FuncName; get_func_name(&FuncName, pFunc->start_ea); //库函数 if ((pFunc->flags & FUNC_LIB) != 0) { msg(\"LibFunc:%a--%s\\n\", pFunc->start_ea, FuncName.c_str()); continue; } msg(\"Func:%a--%s\\n\", pFunc->start_ea, FuncName.c_str()); } return true; } get_func_cmt / set_func_cmt 函数用于获取和设置函数的注释。"
+  },
   "IDASDK/Windows下开发环境配置.html": {
     "href": "IDASDK/Windows下开发环境配置.html",
     "title": "Windows下开发环境配置:",
