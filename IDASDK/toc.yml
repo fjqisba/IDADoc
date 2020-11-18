@@ -12,5 +12,13 @@
   href: (enum.hpp)枚举类型.md
 - name: (funcs.hpp)函数相关
   href: (funcs.hpp)函数相关.md
-- name: 结构体和数据类型
-  href: 结构体和数据类型.md
+- name: (kernwin.hpp)内核与界面相关
+  href: (kernwin.hpp)内核与界面相关.md
+- name: (name.hpp)名称相关
+  href: (name.hpp)名称相关.md
+- name: (pro.h)公共函数
+  href: (pro.h)公共函数.md
+- name: (segment.hpp)区段相关
+  href: (segment.hpp)区段相关.md
+- name: (struct.hpp)结构体类型
+  href: (struct.hpp)结构体类型.md

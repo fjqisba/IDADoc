@@ -12,6 +12,8 @@ C/C++ -> 常规:添加SDK的include路径到"附加包含目录"一栏，比如D
 
 C/C++ -> 预处理器:添加`__NT__`
 
+C/C++ -> 代码生成:更改"安全检查"为**禁用安全检查(/GS-)**
+
 链接器 -> 常规:添加SDK的lib库路径到"附加库目录"一栏，比如针对ida.exe所写的插件添加D:\idasdk74\lib\x64_win_vc_32，针对ida64.exe所写的插件添加D:\idasdk74\lib\x64_win_vc_64。
 
 链接器 -> 附加依赖项: 添加`ida.lib`到"附加依赖项"一栏。
@@ -73,3 +75,54 @@ plugin_t PLUGIN =
 ```
 
 编译运行该插件后，会显示出提示框Hello,world!
+
+------
+
+当IDA加载文件后，会生成一个idainfo信息，该信息存在在数据库文件中(即IDB文件)。
+
+idainfo结构体定义在<ida.hpp>文件中，下面列出一部分值
+
+```c++
+struct idainfo
+{
+	char tag[3];		//固定为'IDA'
+	char zero;		//没用
+	ushort version;		//数据库版本
+	char procname[16];	//当前处理器名称
+
+	...
+	ushort filetype;	// 被反汇编的文件类型,例如f_PE,f_ELF,参考filetype_t
+	ea_t startIP;		// 程序开始运行时,[E]IP寄存器的值
+	ea_t startSP;		// 程序开始运行时,[E]SP寄存器的值
+	ea_t main;		// IDA解析出的主函数入口点的线性地址
+	ea_t minEA;		// 程序的最小线性地址
+	ea_t maxEA;		// 程序的最大线性地址
+	...
+};
+```
+
+该结构体以全局变量inf的形式定义在<ida.hpp>头文件中，我们可以直接使用。
+
+比方说，我们想要编写的插件，只想处理Intel x86处理器类型下的PE和ELF两种格式的文件，编写以下代码:
+
+```c++
+#include <ida.hpp>
+#include <idp.hpp>
+#include <loader.hpp>
+
+int idaapi init(void)
+{
+	qstring ProcName = inf.procname;
+	if (ProcName != "metapc" || (inf.filetype != f_ELF && inf.filetype != f_PE))
+	{
+		return PLUGIN_SKIP;
+	}
+
+	return PLUGIN_OK;
+}
+```
+
+这样遇到不符合的文件，插件将不会载入。
+
+------
+

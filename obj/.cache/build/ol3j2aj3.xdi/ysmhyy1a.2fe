@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Windows&#19979;&#24320;&#21457;&#29615;&#22659;&#37197;&#32622;: </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Windows&#19979;&#24320;&#21457;&#29615;&#22659;&#37197;&#32622;: ">
+    <meta name="generator" content="docfx 2.56.2.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="windows下开发环境配置" sourcefile="IDASDK/Windows下开发环境配置.md" sourcestartlinenumber="1">Windows下开发环境配置:</h1>
+
+<p sourcefile="IDASDK/Windows下开发环境配置.md" sourcestartlinenumber="3">1.建立一个空的Visual Studio项目，添加IDADemo.cpp文件</p>
+<p sourcefile="IDASDK/Windows下开发环境配置.md" sourcestartlinenumber="5">2.由于7.0版本以后的IDA插件必须都是64位的，因此编译平台选择x64</p>
+<p sourcefile="IDASDK/Windows下开发环境配置.md" sourcestartlinenumber="7">3.进行如下设置</p>
+<p sourcefile="IDASDK/Windows下开发环境配置.md" sourcestartlinenumber="9">配置属性-&gt;常规:更改&quot;配置类型&quot;为<strong sourcefile="IDASDK/Windows下开发环境配置.md" sourcestartlinenumber="9">动态库(.dll)</strong></p>
+<p sourcefile="IDASDK/Windows下开发环境配置.md" sourcestartlinenumber="11">C/C++ -&gt; 常规:添加SDK的include路径到&quot;附加包含目录&quot;一栏，比如D:\idasdk74\include</p>
+<p sourcefile="IDASDK/Windows下开发环境配置.md" sourcestartlinenumber="13">C/C++ -&gt; 预处理器:添加<code sourcefile="IDASDK/Windows下开发环境配置.md" sourcestartlinenumber="13">__NT__</code></p>
+<p sourcefile="IDASDK/Windows下开发环境配置.md" sourcestartlinenumber="15">C/C++ -&gt; 代码生成:更改&quot;安全检查&quot;为<strong sourcefile="IDASDK/Windows下开发环境配置.md" sourcestartlinenumber="15">禁用安全检查(/GS-)</strong></p>
+<p sourcefile="IDASDK/Windows下开发环境配置.md" sourcestartlinenumber="17">链接器 -&gt; 常规:添加SDK的lib库路径到&quot;附加库目录&quot;一栏，比如针对ida.exe所写的插件添加D:\idasdk74\lib\x64_win_vc_32，针对ida64.exe所写的插件添加D:\idasdk74\lib\x64_win_vc_64。</p>
+<p sourcefile="IDASDK/Windows下开发环境配置.md" sourcestartlinenumber="19">链接器 -&gt; 附加依赖项: 添加<code sourcefile="IDASDK/Windows下开发环境配置.md" sourcestartlinenumber="19">ida.lib</code>到&quot;附加依赖项&quot;一栏。</p>
+<p sourcefile="IDASDK/Windows下开发环境配置.md" sourcestartlinenumber="23">这样一个IDA插件开发环境就搭建好了。</p>
+<h3 id="插件模板介绍" sourcefile="IDASDK/Windows下开发环境配置.md" sourcestartlinenumber="25">插件模板介绍:</h3>
+<p sourcefile="IDASDK/Windows下开发环境配置.md" sourcestartlinenumber="27">在IDADemo.cpp添加如下模板代码:</p>
+<pre><code class="lang-c++" sourcefile="IDASDK/Windows下开发环境配置.md" sourcestartlinenumber="29">#include &lt;ida.hpp&gt;
+#include &lt;idp.hpp&gt;
+#include &lt;loader.hpp&gt;
+#include &lt;kernwin.hpp&gt;
+
+//以上是导入的SDK头文件
+
+int idaapi init(void)
+{
+  //IDA在启动的时候会调用每个插件的init函数。
+  //返回值有三种选项:
+  //PLUGIN_SKIP适合那些不支持的插件，IDA将不会加载该插件
+  //PLUGIN_OK适合那些执行一次性功能的插件
+  //PLUGIN_KEEP适合那些需要一直保持功能的插件
+  return PLUGIN_OK;
+}
+
+void idaapi term(void)
+{
+  //当结束插件时，一般您可以在此添加一点任务清理的代码。
+  return;
+}
+
+bool idaapi run(size_t)
+{
+  //当按下热键时候,执行功能的入口函数
+  warning(&quot;Hello, world!&quot;);
+  return true;
+}
+
+static char comment[] = &quot;It's a plugin to show Hello world!&quot;;
+
+plugin_t PLUGIN =
+{
+  IDP_INTERFACE_VERSION,
+  0,                    // 插件的一些属性,一般为0即可
+  init,                 // initialize
+  term,                 // terminate. this pointer may be NULL.
+  run,                  // invoke plugin
+  comment,              // 插件的说明,会显示在IDA下方的状态栏中
+  &quot;&quot;,                   // multiline help about the plugin
+  &quot;Hello, world&quot;,		// 插件在列表中显示的名称
+  &quot;Alt-F1&quot;              // 插件想要注册的功能快捷键
+};
+
+</code></pre>
+<p sourcefile="IDASDK/Windows下开发环境配置.md" sourcestartlinenumber="77">编译运行该插件后，会显示出提示框Hello,world!</p>
+<hr sourcefile="IDASDK/Windows下开发环境配置.md" sourcestartlinenumber="79">
+<p sourcefile="IDASDK/Windows下开发环境配置.md" sourcestartlinenumber="81">当IDA加载文件后，会生成一个idainfo信息，该信息存在在数据库文件中(即IDB文件)。</p>
+<p sourcefile="IDASDK/Windows下开发环境配置.md" sourcestartlinenumber="83">idainfo结构体定义在&lt;ida.hpp&gt;文件中，下面列出一部分值</p>
+<pre><code class="lang-c++" sourcefile="IDASDK/Windows下开发环境配置.md" sourcestartlinenumber="85">struct idainfo
+{
+    char tag[3];			//固定为'IDA'
+    char zero;				//没用
+    ushort version;			//数据库版本
+    char procname[16]; 		//当前处理器名称
+
+    ...
+	ushort filetype; 		// 被反汇编的文件类型,例如f_PE,f_ELF,参考filetype_t
+    ea_t startIP; 			// 程序开始运行时,[E]IP寄存器的值
+	ea_t startSP;		    // 程序开始运行时,[E]SP寄存器的值
+	ea_t main; 				// IDA解析出的主函数入口点的线性地址
+	ea_t minEA; 			// 程序的最小线性地址
+	ea_t maxEA;				// 程序的最大线性地址
+	...
+}; 
+</code></pre>
+<p sourcefile="IDASDK/Windows下开发环境配置.md" sourcestartlinenumber="104">该结构体以全局变量inf的形式定义在&lt;ida.hpp&gt;头文件中，我们可以直接使用。</p>
+<p sourcefile="IDASDK/Windows下开发环境配置.md" sourcestartlinenumber="106">比方说，我们想要编写的插件，只想处理Intel x86处理器类型下的PE和ELF两种格式的文件，编写以下代码:</p>
+<pre><code class="lang-c++" sourcefile="IDASDK/Windows下开发环境配置.md" sourcestartlinenumber="108">#include &lt;ida.hpp&gt;
+#include &lt;idp.hpp&gt;
+#include &lt;loader.hpp&gt;
+
+int idaapi init(void)
+{
+	qstring ProcName = inf.procname;
+	if (ProcName != &quot;metapc&quot; || (inf.filetype != f_ELF &amp;&amp; inf.filetype != f_PE))
+	{
+		return PLUGIN_SKIP;
+	}
+
+	return PLUGIN_OK;
+}
+</code></pre>
+<p sourcefile="IDASDK/Windows下开发环境配置.md" sourcestartlinenumber="125">这样遇到不符合的文件，插件将不会载入。</p>
+<hr sourcefile="IDASDK/Windows下开发环境配置.md" sourcestartlinenumber="127">
+</article>
+          </div>
+          <div class="contribution-panel mobile-hide">
+              <a href="https://github.com/fjqisba/IDADoc/blob/master/IDASDK/Windows&#19979;&#24320;&#21457;&#29615;&#22659;&#37197;&#32622;.md/#L1" title="Improve this Doc" class="fab btn-warning pull-right"><i class="glyphicon glyphicon-pencil"></i></a>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

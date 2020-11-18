@@ -98,11 +98,71 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "IDASDK/(kernwin.hpp)内核与界面相关.md",
+      "output": {
+        ".html": {
+          "relative_path": "IDASDK/(kernwin.hpp)内核与界面相关.html",
+          "hash": "4GQQiKqwmYfEd1RrponSDg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "IDASDK/(name.hpp)名称相关.md",
+      "output": {
+        ".html": {
+          "relative_path": "IDASDK/(name.hpp)名称相关.html",
+          "hash": "nozEzzPqWWPeQrPHTI/8Mw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "IDASDK/(pro.h)公共函数.md",
+      "output": {
+        ".html": {
+          "relative_path": "IDASDK/(pro.h)公共函数.html",
+          "hash": "KiZeoL5chFxIlMKS+5Ncyg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "IDASDK/(segment.hpp)区段相关.md",
+      "output": {
+        ".html": {
+          "relative_path": "IDASDK/(segment.hpp)区段相关.html",
+          "hash": "py3mOYWfFpgXYHnKUMZDBg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "IDASDK/(struct.hpp)结构体类型.md",
+      "output": {
+        ".html": {
+          "relative_path": "IDASDK/(struct.hpp)结构体类型.html",
+          "hash": "KF0Wld4mJIJRQS8xcfTIqw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "IDASDK/Windows下开发环境配置.md",
       "output": {
         ".html": {
           "relative_path": "IDASDK/Windows下开发环境配置.html",
-          "hash": "OebQYJHx3KQIUJVFLPVwoQ=="
+          "hash": "YFKr0dnp5eGBIW7cbHiTJA=="
         }
       },
       "is_incremental": false,
@@ -114,7 +174,7 @@
       "output": {
         ".html": {
           "relative_path": "IDASDK/toc.html",
-          "hash": "+p5oHDinlFkRTFkEC0K6cg=="
+          "hash": "cIClvXMVk3qsrC1l+0bEpw=="
         }
       },
       "is_incremental": false,
@@ -127,18 +187,6 @@
         ".html": {
           "relative_path": "IDASDK/文件读写.html",
           "hash": "u98dE575HMRjaxhI5bdI2g=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "IDASDK/结构体和数据类型.md",
-      "output": {
-        ".html": {
-          "relative_path": "IDASDK/结构体和数据类型.html",
-          "hash": "PIKsdG6tt/vqQ4BgLv1yvQ=="
         }
       },
       "is_incremental": false,
@@ -205,8 +253,8 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": true,
           "incrementalPhase": "build",
-          "total_file_count": 12,
-          "skipped_file_count": 11
+          "total_file_count": 16,
+          "skipped_file_count": 16
         },
         "TocDocumentProcessor": {
           "can_incremental": false,
