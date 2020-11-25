@@ -22,3 +22,7 @@
   href: (segment.hpp)区段相关.md
 - name: (struct.hpp)结构体类型
   href: (struct.hpp)结构体类型.md
+- name: (typeinf.hpp)声明类型
+  href: (typeinf.hpp)声明类型.md
+- name: (xref.hpp)交叉引用
+  href: (xref.hpp)交叉引用.md

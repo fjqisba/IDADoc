@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>&#22768;&#26126;&#31867;&#22411; </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="&#22768;&#26126;&#31867;&#22411; ">
+    <meta name="generator" content="docfx 2.56.2.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="声明类型" sourcefile="IDASDK/(typeinf.hpp)声明类型.md" sourcestartlinenumber="1">声明类型</h1>
+
+<p sourcefile="IDASDK/(typeinf.hpp)声明类型.md" sourcestartlinenumber="3">IDA内部记录着一个声明类型库，通过IDA的Local Types窗口我们可以看到里面的声明类型。</p>
+<hr sourcefile="IDASDK/(typeinf.hpp)声明类型.md" sourcestartlinenumber="5">
+<p sourcefile="IDASDK/(typeinf.hpp)声明类型.md" sourcestartlinenumber="7">获取IDA内部的声明类型库。</p>
+<pre><code class="lang-c++" sourcefile="IDASDK/(typeinf.hpp)声明类型.md" sourcestartlinenumber="9">til_t * get_idati(void);
+</code></pre>
+<hr sourcefile="IDASDK/(typeinf.hpp)声明类型.md" sourcestartlinenumber="13">
+<p sourcefile="IDASDK/(typeinf.hpp)声明类型.md" sourcestartlinenumber="15">解析多条声明，并将它们存储至声明类型库。</p>
+<pre><code class="lang-c++" sourcefile="IDASDK/(typeinf.hpp)声明类型.md" sourcestartlinenumber="17">int parse_decls(
+        til_t *til,
+        const char *input,
+        printer_t *printer,
+        int hti_flags);
+</code></pre>
+<p sourcefile="IDASDK/(typeinf.hpp)声明类型.md" sourcestartlinenumber="25">第一个参数为要存储解析声明结果的声明类型库。</p>
+<p sourcefile="IDASDK/(typeinf.hpp)声明类型.md" sourcestartlinenumber="27">第二个参数代表声明的文本，如果参数四<code sourcefile="IDASDK/(typeinf.hpp)声明类型.md" sourcestartlinenumber="27">hti_flags</code>为HTI_FIL，则代表包含声明的文件路径。</p>
+<p sourcefile="IDASDK/(typeinf.hpp)声明类型.md" sourcestartlinenumber="29">第三个参数为一个回调函数指针，用于输出解析过程的一些信息。</p>
+<p sourcefile="IDASDK/(typeinf.hpp)声明类型.md" sourcestartlinenumber="31">第四个参数用来设置如何解析声明的一些标志。</p>
+<p sourcefile="IDASDK/(typeinf.hpp)声明类型.md" sourcestartlinenumber="33">这个函数使用频率还是很高的，使用例子如下:</p>
+<pre><code class="lang-c++" sourcefile="IDASDK/(typeinf.hpp)声明类型.md" sourcestartlinenumber="35">#include &lt;ida.hpp&gt;
+#include &lt;idp.hpp&gt;
+#include &lt;loader.hpp&gt;
+#include &lt;typeinf.hpp&gt;
+
+til_t* idati = NULL;
+bool idaapi run(size_t)
+{
+	const char Decls[] = &quot;\
+	struct __declspec(align(4)) Tree_nod\
+	{\
+		Tree_nod* _Left;\
+		Tree_nod* _Parent;\
+		Tree_nod* _Right;\
+		char _Color;\
+		char _Isnil;\
+		int _Myval; \
+	};\
+	struct map\
+	{\
+		Tree_nod* _MyHead;\
+		unsigned int _Mysize;\
+	};&quot;;
+
+	idati = (til_t*)get_idati();
+	parse_decls(idati, Decls, NULL,0);
+
+	return true;
+}
+</code></pre>
+<p sourcefile="IDASDK/(typeinf.hpp)声明类型.md" sourcestartlinenumber="67">调用函数后，类型声明就存储到了IDA的声明类型库中。</p>
+<hr sourcefile="IDASDK/(typeinf.hpp)声明类型.md" sourcestartlinenumber="69">
+<p sourcefile="IDASDK/(typeinf.hpp)声明类型.md" sourcestartlinenumber="71">导入声明类型至IDB中。相当于将Local Types窗口中的声明拷贝至Structures窗口。</p>
+<pre><code class="lang-c++" sourcefile="IDASDK/(typeinf.hpp)声明类型.md" sourcestartlinenumber="73">tid_t import_type (const til_t *til, int idx, const char *name, int flags=0)
+</code></pre>
+<p sourcefile="IDASDK/(typeinf.hpp)声明类型.md" sourcestartlinenumber="77">参数一为要导入声明的声明类型库。</p>
+<p sourcefile="IDASDK/(typeinf.hpp)声明类型.md" sourcestartlinenumber="79">参数二为新类型在列表中的位置，一般填-1就行了，表示加入到列表末尾。</p>
+<p sourcefile="IDASDK/(typeinf.hpp)声明类型.md" sourcestartlinenumber="81">参数三为要导入声明的名称。</p>
+<p sourcefile="IDASDK/(typeinf.hpp)声明类型.md" sourcestartlinenumber="83">参数四可不填。</p>
+<p sourcefile="IDASDK/(typeinf.hpp)声明类型.md" sourcestartlinenumber="85">返回值为拷贝得到的结构体的类型ID。</p>
+<hr sourcefile="IDASDK/(typeinf.hpp)声明类型.md" sourcestartlinenumber="87">
+<p sourcefile="IDASDK/(typeinf.hpp)声明类型.md" sourcestartlinenumber="89">修改指定地址的声明。</p>
+<p sourcefile="IDASDK/(typeinf.hpp)声明类型.md" sourcestartlinenumber="91">该函数会解析声明文本，然后调用apply_tinfo函数进行修改。</p>
+<pre><code class="lang-c++" sourcefile="IDASDK/(typeinf.hpp)声明类型.md" sourcestartlinenumber="93">bool apply_cdecl(til_t *til, ea_t ea, const char *decl, int flags=0);
+</code></pre>
+<p sourcefile="IDASDK/(typeinf.hpp)声明类型.md" sourcestartlinenumber="97">参数一为声明类型库。</p>
+<p sourcefile="IDASDK/(typeinf.hpp)声明类型.md" sourcestartlinenumber="99">参数二为指定的线性地址。</p>
+<p sourcefile="IDASDK/(typeinf.hpp)声明类型.md" sourcestartlinenumber="101">参数三为声明文本。</p>
+<p sourcefile="IDASDK/(typeinf.hpp)声明类型.md" sourcestartlinenumber="103">参数四为附加参数:</p>
+<p sourcefile="IDASDK/(typeinf.hpp)声明类型.md" sourcestartlinenumber="105">TINFO_GUESSED告诉IDA这是一个模糊的声明。</p>
+<p sourcefile="IDASDK/(typeinf.hpp)声明类型.md" sourcestartlinenumber="107">TINFO_DEFINITE告诉IDA这是一个精确的声明。</p>
+<p sourcefile="IDASDK/(typeinf.hpp)声明类型.md" sourcestartlinenumber="109">TINFO_DELAYFUNC，如果声明的种类为函数声明，但是指定的线性地址不存在函数，则尝试建立函数。</p>
+<p sourcefile="IDASDK/(typeinf.hpp)声明类型.md" sourcestartlinenumber="111">TINFO_STRICT，在修改声明之前绝不对类型进行转换。</p>
+<p sourcefile="IDASDK/(typeinf.hpp)声明类型.md" sourcestartlinenumber="113"><code sourcefile="IDASDK/(typeinf.hpp)声明类型.md" sourcestartlinenumber="113">apply_cdecl</code>常常被用来修改函数声明，示例如下:</p>
+<pre><code class="lang-c++" sourcefile="IDASDK/(typeinf.hpp)声明类型.md" sourcestartlinenumber="115">til_t* idati = NULL;
+bool idaapi run(size_t)
+{
+	idati = (til_t*)get_idati();
+	apply_cdecl(idati, 0x401000, &quot;int __cdecl sub_401000(int a, int b, int *c);&quot;, TINFO_DEFINITE);	//注意声明末尾有一个;号
+
+	return true;
+}
+</code></pre>
+</article>
+          </div>
+          <div class="contribution-panel mobile-hide">
+              <a href="https://github.com/fjqisba/IDADoc/blob/master/IDASDK/(typeinf.hpp)&#22768;&#26126;&#31867;&#22411;.md/#L1" title="Improve this Doc" class="fab btn-warning pull-right"><i class="glyphicon glyphicon-pencil"></i></a>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

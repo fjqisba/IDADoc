@@ -150,7 +150,31 @@
       "output": {
         ".html": {
           "relative_path": "IDASDK/(struct.hpp)结构体类型.html",
-          "hash": "KF0Wld4mJIJRQS8xcfTIqw=="
+          "hash": "BlltXAWbJDW0Q7UQ3roS+Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "IDASDK/(typeinf.hpp)声明类型.md",
+      "output": {
+        ".html": {
+          "relative_path": "IDASDK/(typeinf.hpp)声明类型.html",
+          "hash": "DT/WLv/1feByZmJcwOGG/A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "IDASDK/(xref.hpp)交叉引用.md",
+      "output": {
+        ".html": {
+          "relative_path": "IDASDK/(xref.hpp)交叉引用.html",
+          "hash": "jAwvQFUzL/pUH3RIDHDSNA=="
         }
       },
       "is_incremental": false,
@@ -174,7 +198,7 @@
       "output": {
         ".html": {
           "relative_path": "IDASDK/toc.html",
-          "hash": "cIClvXMVk3qsrC1l+0bEpw=="
+          "hash": "wmwLjE/DqxLYdMOEdPGqcw=="
         }
       },
       "is_incremental": false,
@@ -198,7 +222,7 @@
       "output": {
         ".html": {
           "relative_path": "README.html",
-          "hash": "Eb0VOLjEBgngeeyPCTJV+g=="
+          "hash": "Qwk5LtEuHkjZ85+JC8Eu4w=="
         }
       },
       "is_incremental": false,
@@ -253,8 +277,8 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": true,
           "incrementalPhase": "build",
-          "total_file_count": 16,
-          "skipped_file_count": 16
+          "total_file_count": 18,
+          "skipped_file_count": 17
         },
         "TocDocumentProcessor": {
           "can_incremental": false,

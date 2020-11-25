@@ -56,8 +56,18 @@
   },
   "IDASDK/(struct.hpp)结构体类型.html": {
     "href": "IDASDK/(struct.hpp)结构体类型.html",
-    "title": "结构体和数据类型",
-    "keywords": "结构体和数据类型 结构体与IDA中的Structures窗口信息有一定关系。 数据类型与IDA中的Local Types窗口信息有一定关系。 add_struc 用于创建结构体。 tid_t add_struc(uval_t idx, const char *name, bool is_union=false); 参数: idx为结构体的索引，参考的结构体列表，代表列表中的顺序，如果idx为-1，表示添加结构体到列表末尾。 name为结构体的名称，不能为不合法名称，也不可以与数据库已有的名称重复。 is_union表示该结构体是否为联合体。 返回值: 返回值tid_t实际上就是个整数，用于标识唯一的结构体类型。如果返回-1，代表创建结构体失败。 get_struc 通过标识符tid_t索引得到对应的结构体类型信息struc_t。 struc_t* get_struc(tid_t id); get_struc_id /get_struc_name 通过结构体的名称来索引得到对应的结构体ID，或者通过结构体ID索引得到结构体的名称。 tid_t get_struc_id(const char *name); qstring get_struc_name(tid_t id); expand_struc 扩充或者收缩一个结构体 bool expand_struc(struc_t *sptr, ea_t offset, adiff_t delta, bool recalc=true); 参数: sptr表示需要执行操作的结构体。 offset表示结构体的偏移。 delta表示要扩充的字节大小，如果为负数则表示要移除的字节大小。 recalc表示是否重新计算结构体类型被使用的地方。 返回值: 返回true表示函数执行成功。 需要注意的是，一个空的结构体是无法执行expand_struc函数的，可以参考以下代码初始化一个结构体 //name为结构体的名称,size为结构体的大小 tid_t CreateStructure(const char* name, int size) { //已存在相同名称的结构体 tid_t structId = get_struc_id(name); if (structId != BADADDR) { return structId; } structId = add_struc(-1, name); if (structId == BADADDR) { return structId; } struc_t* pStruct = get_struc(structId); char fieldName[64] = { 0 }; for (int n = 0; n < size; ++n) { qsnprintf(fieldName, sizeof(fieldName), \"field_%a\", n); add_struc_member(pStruct, fieldName, n, 0, NULL, 1); } return structId; }"
+    "title": "结构体类型",
+    "keywords": "结构体类型 IDA内部维护着一个结构体列表，IDA中的Structures窗口可以看到结构体列表的信息。 创建结构体 tid_t add_struc(uval_t idx, const char *name, bool is_union=false); 第一个参数，idx为结构体的索引，代表所插入的结构体在IDA存储的列表中的顺序，如果idx为-1，表示添加结构体到列表末尾。 第二个参数，name为结构体的名称，不能为不合法名称，也不可以与数据库已有的名称重复。 返回值tid_t实际上就是个整数，用于标识唯一的结构体类型。如果返回-1，代表创建结构体失败。 通过标识符tid_t索引得到对应的结构体类型信息struc_t。 struc_t* get_struc(tid_t id); 通过结构体的名称来索引得到对应的结构体ID，或者通过结构体ID索引得到结构体的名称。 tid_t get_struc_id(const char *name); qstring get_struc_name(tid_t id); 扩充或者收缩一个结构体 bool expand_struc(struc_t *sptr, ea_t offset, adiff_t delta, bool recalc=true); 参数: sptr表示需要执行操作的结构体。 offset表示结构体的偏移。 delta表示要扩充的字节大小，如果为负数则表示要移除的字节大小。 recalc表示是否重新计算结构体类型被使用的地方。 返回值: 返回true表示函数执行成功。 需要注意的是，一个空的结构体是无法执行expand_struc函数的，可以参考以下代码初始化一个结构体 //name为结构体的名称,size为结构体的大小 tid_t CreateStructure(const char* name, int size) { //已存在相同名称的结构体 tid_t structId = get_struc_id(name); if (structId != BADADDR) { return structId; } structId = add_struc(-1, name); if (structId == BADADDR) { return structId; } struc_t* pStruct = get_struc(structId); char fieldName[64] = { 0 }; for (int n = 0; n < size; ++n) { qsnprintf(fieldName, sizeof(fieldName), \"field_%a\", n); add_struc_member(pStruct, fieldName, n, 0, NULL, 1); } return structId; }"
+  },
+  "IDASDK/(typeinf.hpp)声明类型.html": {
+    "href": "IDASDK/(typeinf.hpp)声明类型.html",
+    "title": "声明类型",
+    "keywords": "声明类型 IDA内部记录着一个声明类型库，通过IDA的Local Types窗口我们可以看到里面的声明类型。 获取IDA内部的声明类型库。 til_t * get_idati(void); 解析多条声明，并将它们存储至声明类型库。 int parse_decls( til_t *til, const char *input, printer_t *printer, int hti_flags); 第一个参数为要存储解析声明结果的声明类型库。 第二个参数代表声明的文本，如果参数四 hti_flags 为HTI_FIL，则代表包含声明的文件路径。 第三个参数为一个回调函数指针，用于输出解析过程的一些信息。 第四个参数用来设置如何解析声明的一些标志。 这个函数使用频率还是很高的，使用例子如下: #include <ida.hpp> #include <idp.hpp> #include <loader.hpp> #include <typeinf.hpp> til_t* idati = NULL; bool idaapi run(size_t) { const char Decls[] = \"\\ struct __declspec(align(4)) Tree_nod\\ {\\ Tree_nod* _Left;\\ Tree_nod* _Parent;\\ Tree_nod* _Right;\\ char _Color;\\ char _Isnil;\\ int _Myval; \\ };\\ struct map\\ {\\ Tree_nod* _MyHead;\\ unsigned int _Mysize;\\ };\"; idati = (til_t*)get_idati(); parse_decls(idati, Decls, NULL,0); return true; } 调用函数后，类型声明就存储到了IDA的声明类型库中。 导入声明类型至IDB中。相当于将Local Types窗口中的声明拷贝至Structures窗口。 tid_t import_type (const til_t *til, int idx, const char *name, int flags=0) 参数一为要导入声明的声明类型库。 参数二为新类型在列表中的位置，一般填-1就行了，表示加入到列表末尾。 参数三为要导入声明的名称。 参数四可不填。 返回值为拷贝得到的结构体的类型ID。 修改指定地址的声明。 该函数首先会解析声明文本，然后调用apply_tinfo函数进行修改。 bool apply_cdecl(til_t *til, ea_t ea, const char *decl, int flags=0); 参数一为声明类型库。 参数二为指定的线性地址。 参数三为声明文本。 参数四为附加参数: TINFO_GUESSED告诉IDA这是一个模糊的声明。 TINFO_DEFINITE告诉IDA这是一个精确的声明。这会影响到IDA的一些解析。 TINFO_DELAYFUNC，如果声明的种类为函数声明，但是指定的线性地址不存在函数，则尝试建立函数。 TINFO_STRICT，在修改声明之前绝不对类型进行转换。 apply_cdecl 常常被用来修改函数声明，示例如下: til_t* idati = NULL; bool idaapi run(size_t) { idati = (til_t*)get_idati(); apply_cdecl(idati, 0x401000, \"int __cdecl sub_401000(int a, int b, int *c);\", TINFO_DEFINITE); //注意声明末尾有一个;号 return true; }"
+  },
+  "IDASDK/(xref.hpp)交叉引用.html": {
+    "href": "IDASDK/(xref.hpp)交叉引用.html",
+    "title": "交叉引用",
+    "keywords": "交叉引用 xref.hpp包括和交叉引用相关的一些函数。 交叉引用分为两种:代码交叉引用和数据交叉引用。 交叉引用会自动进行排序。 获取某个全局变量所有的交叉引用地址，示例代码如下: #include <ida.hpp> #include <idp.hpp> #include <loader.hpp> #include <xref.hpp> bool idaapi run(size_t) { //可以自行输入一个全局变量的地址... ea_t GlobalVarAddr = 0x489085; ea_t XrefAddr = get_first_dref_to(GlobalVarAddr); while (XrefAddr != BADADDR) { msg(\"XrefAddr:%a\\n\", XrefAddr); XrefAddr = get_next_dref_to(GlobalVarAddr, XrefAddr); } return true; }"
   },
   "IDASDK/Windows下开发环境配置.html": {
     "href": "IDASDK/Windows下开发环境配置.html",
@@ -77,6 +87,6 @@
   "README.html": {
     "href": "README.html",
     "title": "IDADoc",
-    "keywords": "IDADoc 用于存放IDA相关的资料和文档"
+    "keywords": "IDADoc 用于存放IDA相关的资料和文档 https://fjqisba.github.io/IDADoc/"
   }
 }

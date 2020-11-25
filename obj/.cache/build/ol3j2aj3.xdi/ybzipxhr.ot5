@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>&#32467;&#26500;&#20307;&#31867;&#22411; </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="&#32467;&#26500;&#20307;&#31867;&#22411; ">
+    <meta name="generator" content="docfx 2.56.2.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="结构体类型" sourcefile="IDASDK/(struct.hpp)结构体类型.md" sourcestartlinenumber="1">结构体类型</h1>
+
+<p sourcefile="IDASDK/(struct.hpp)结构体类型.md" sourcestartlinenumber="3">&lt;struct.hpp&gt;与IDA中的Structures窗口信息有关，用于结构体管理。</p>
+<p sourcefile="IDASDK/(struct.hpp)结构体类型.md" sourcestartlinenumber="9">创建结构体函数</p>
+<pre><code class="lang-c" sourcefile="IDASDK/(struct.hpp)结构体类型.md" sourcestartlinenumber="11">tid_t add_struc(uval_t idx, const char *name, bool is_union=false);
+</code></pre>
+<h5 id="参数" sourcefile="IDASDK/(struct.hpp)结构体类型.md" sourcestartlinenumber="15">参数:</h5>
+<p sourcefile="IDASDK/(struct.hpp)结构体类型.md" sourcestartlinenumber="17">idx为结构体的索引，参考的结构体列表，代表列表中的顺序，如果idx为-1，表示添加结构体到列表末尾。</p>
+<p sourcefile="IDASDK/(struct.hpp)结构体类型.md" sourcestartlinenumber="19">name为结构体的名称，不能为不合法名称，也不可以与数据库已有的名称重复。</p>
+<p sourcefile="IDASDK/(struct.hpp)结构体类型.md" sourcestartlinenumber="21">is_union表示该结构体是否为联合体。</p>
+<h5 id="返回值" sourcefile="IDASDK/(struct.hpp)结构体类型.md" sourcestartlinenumber="23">返回值:</h5>
+<p sourcefile="IDASDK/(struct.hpp)结构体类型.md" sourcestartlinenumber="25">返回值tid_t实际上就是个整数，用于标识唯一的结构体类型。如果返回-1，代表创建结构体失败。</p>
+<hr sourcefile="IDASDK/(struct.hpp)结构体类型.md" sourcestartlinenumber="27">
+<p sourcefile="IDASDK/(struct.hpp)结构体类型.md" sourcestartlinenumber="29">通过标识符tid_t索引得到对应的结构体类型信息struc_t。</p>
+<pre><code class="lang-c" sourcefile="IDASDK/(struct.hpp)结构体类型.md" sourcestartlinenumber="31">struc_t* get_struc(tid_t id);
+</code></pre>
+<p sourcefile="IDASDK/(struct.hpp)结构体类型.md" sourcestartlinenumber="35">通过结构体的名称来索引得到对应的结构体ID，或者通过结构体ID索引得到结构体的名称。</p>
+<pre><code class="lang-c" sourcefile="IDASDK/(struct.hpp)结构体类型.md" sourcestartlinenumber="37">tid_t get_struc_id(const char *name);
+qstring get_struc_name(tid_t id);
+</code></pre>
+<hr sourcefile="IDASDK/(struct.hpp)结构体类型.md" sourcestartlinenumber="42">
+<p sourcefile="IDASDK/(struct.hpp)结构体类型.md" sourcestartlinenumber="44">扩充或者收缩一个结构体</p>
+<pre><code class="lang-c" sourcefile="IDASDK/(struct.hpp)结构体类型.md" sourcestartlinenumber="46">bool expand_struc(struc_t *sptr, ea_t offset, adiff_t delta, bool recalc=true);
+</code></pre>
+<h5 id="参数-1" sourcefile="IDASDK/(struct.hpp)结构体类型.md" sourcestartlinenumber="50">参数:</h5>
+<p sourcefile="IDASDK/(struct.hpp)结构体类型.md" sourcestartlinenumber="52">sptr表示需要执行操作的结构体。</p>
+<p sourcefile="IDASDK/(struct.hpp)结构体类型.md" sourcestartlinenumber="54">offset表示结构体的偏移。</p>
+<p sourcefile="IDASDK/(struct.hpp)结构体类型.md" sourcestartlinenumber="56">delta表示要扩充的字节大小，如果为负数则表示要移除的字节大小。</p>
+<p sourcefile="IDASDK/(struct.hpp)结构体类型.md" sourcestartlinenumber="58">recalc表示是否重新计算结构体类型被使用的地方。</p>
+<h5 id="返回值-1" sourcefile="IDASDK/(struct.hpp)结构体类型.md" sourcestartlinenumber="60">返回值:</h5>
+<p sourcefile="IDASDK/(struct.hpp)结构体类型.md" sourcestartlinenumber="62">返回true表示函数执行成功。</p>
+<p sourcefile="IDASDK/(struct.hpp)结构体类型.md" sourcestartlinenumber="66">需要注意的是，一个空的结构体是无法执行expand_struc函数的，可以参考以下代码初始化一个结构体</p>
+<pre><code class="lang-c" sourcefile="IDASDK/(struct.hpp)结构体类型.md" sourcestartlinenumber="68">//name为结构体的名称,size为结构体的大小
+tid_t CreateStructure(const char* name, int size)
+{
+    //已存在相同名称的结构体
+    tid_t structId = get_struc_id(name);
+    if (structId != BADADDR)
+    {
+        return structId;
+    }
+
+    structId = add_struc(-1, name);
+    if (structId == BADADDR)
+    {
+        return structId;
+    }
+
+    struc_t* pStruct = get_struc(structId);
+    char fieldName[64] = { 0 };
+    for (int n = 0; n &lt; size; ++n)
+    {
+        qsnprintf(fieldName, sizeof(fieldName), &quot;field_%a&quot;, n);
+        add_struc_member(pStruct, fieldName, n, 0, NULL, 1);
+    }
+
+    return structId;
+}
+</code></pre>
+</article>
+          </div>
+          <div class="contribution-panel mobile-hide">
+              <a href="https://github.com/fjqisba/IDADoc/blob/master/IDASDK/(struct.hpp)&#32467;&#26500;&#20307;&#31867;&#22411;.md/#L1" title="Improve this Doc" class="fab btn-warning pull-right"><i class="glyphicon glyphicon-pencil"></i></a>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
