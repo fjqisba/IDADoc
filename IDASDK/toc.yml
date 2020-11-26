@@ -6,6 +6,8 @@
   href: (bytes.hpp)反汇编字节相关.md
 - name: 文件读写
   href: 文件读写.md
+- name: 导入函数
+  href: 导入函数.md
 - name: (entry.hpp)导出函数相关
   href: (entry.hpp)导出函数相关.md
 - name: (enum.hpp)枚举类型
@@ -26,3 +28,4 @@
   href: (typeinf.hpp)声明类型.md
 - name: (xref.hpp)交叉引用
   href: (xref.hpp)交叉引用.md
+  

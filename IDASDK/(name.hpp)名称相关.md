@@ -30,3 +30,27 @@ ssize_t get_ea_name (qstring *out, ea_t ea, int gtn_flags=0, getname_info_t *gtn
 
 ------
 
+对名称进行解码，此函数一般用来解码C++的符号。
+
+如不清楚什么是解码，可以参考[Name mangling - Wikipedia](https://en.wikipedia.org/wiki/Name_mangling)
+
+```c++
+qstring demangle_name(
+        const char *name,
+        uint32 disable_mask,
+        demreq_type_t demreq=DQT_FULL)
+int32  demangle_name(
+        qstring *out,
+        const char *name,
+        uint32 disable_mask,
+        demreq_type_t demreq=DQT_FULL);
+```
+
+第一个参数name是解码的文本
+
+第二个参数disable_mask是解码的一些选项，和IDA主程序Options->Demangled names里面的选项差不多。
+
+第三个参数demreq是想要得到的解码结果。
+
+------
+

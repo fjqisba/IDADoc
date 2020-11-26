@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>&#20869;&#26680;&#19982;&#30028;&#38754;&#30456;&#20851; </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="&#20869;&#26680;&#19982;&#30028;&#38754;&#30456;&#20851; ">
+    <meta name="generator" content="docfx 2.56.2.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="内核与界面相关" sourcefile="IDASDK/(kernwin.hpp)内核与界面相关.md" sourcestartlinenumber="1">内核与界面相关</h1>
+
+<p sourcefile="IDASDK/(kernwin.hpp)内核与界面相关.md" sourcestartlinenumber="3">&lt;kernwin.hpp&gt;中定义了IDA的内核与界面之间的接口。</p>
+<p sourcefile="IDASDK/(kernwin.hpp)内核与界面相关.md" sourcestartlinenumber="7">输出窗口相关的函数有:</p>
+<pre><code class="lang-c++" sourcefile="IDASDK/(kernwin.hpp)内核与界面相关.md" sourcestartlinenumber="9">//清空输出窗口内容
+void	msg_clear();
+
+//将输出窗口内容保存到文件中
+bool	msg_save(qstring &amp;path);
+
+//打印格式化文本至输出窗口,类似于printf
+int 	msg(const char *format,...);
+</code></pre>
+<hr sourcefile="IDASDK/(kernwin.hpp)内核与界面相关.md" sourcestartlinenumber="20">
+<p sourcefile="IDASDK/(kernwin.hpp)内核与界面相关.md" sourcestartlinenumber="22">弹框相关的函数有:</p>
+<pre><code class="lang-c++" sourcefile="IDASDK/(kernwin.hpp)内核与界面相关.md" sourcestartlinenumber="24">//弹出一个错误窗口，然后退出IDA
+void 	error(const char *format,...);
+
+//弹出一个警告窗口
+void 	warning(const char *format,...);
+
+//弹出一个信息窗口
+void 	info(const char *format,...);
+</code></pre>
+<hr sourcefile="IDASDK/(kernwin.hpp)内核与界面相关.md" sourcestartlinenumber="35">
+<p sourcefile="IDASDK/(kernwin.hpp)内核与界面相关.md" sourcestartlinenumber="37">跳转函数如下，其余的可选参数基本没什么用。。。。</p>
+<pre><code class="lang-c++" sourcefile="IDASDK/(kernwin.hpp)内核与界面相关.md" sourcestartlinenumber="39">#define 	UIJMP_ACTIVATE   0x0001
+#define 	UIJMP_DONTPUSH   0x0002
+#define 	UIJMP_IDAVIEW    0x0004
+bool jumpto(ea_t ea, int opnum=-1, int uijmp_flags=UIJMP_ACTIVATE)
+</code></pre>
+<hr sourcefile="IDASDK/(kernwin.hpp)内核与界面相关.md" sourcestartlinenumber="46">
+<p sourcefile="IDASDK/(kernwin.hpp)内核与界面相关.md" sourcestartlinenumber="48">获取当前屏幕光标处的地址，这个函数也算是一个交互函数吧，比如可以用来获取用户指向的代码/数据位置。</p>
+<pre><code class="lang-c++" sourcefile="IDASDK/(kernwin.hpp)内核与界面相关.md" sourcestartlinenumber="50">ea_t 	get_screen_ea(void);
+</code></pre>
+<hr sourcefile="IDASDK/(kernwin.hpp)内核与界面相关.md" sourcestartlinenumber="54">
+<p sourcefile="IDASDK/(kernwin.hpp)内核与界面相关.md" sourcestartlinenumber="56">弹出选择窗口，一般使用choose函数，这里我们可以参考官方的choose.cpp示例</p>
+<pre><code class="lang-c++" sourcefile="IDASDK/(kernwin.hpp)内核与界面相关.md" sourcestartlinenumber="58">#include &lt;ida.hpp&gt;
+#include &lt;idp.hpp&gt;
+#include &lt;loader.hpp&gt;
+#include &lt;bytes.hpp&gt;
+#include &lt;kernwin.hpp&gt;
+
+//我们需要自定义一个结构体,并且继承chooser_t
+struct calls_chooser_t : public chooser_t
+{
+protected:
+  //每一列的宽度
+  static const int widths_[];
+  //每一列的标题
+  static const char *const header_[];
+
+public:
+  //存储的数据
+  qvector&lt;ea_t&gt; list;
+
+  //对象必须使用new来构造
+  calls_chooser_t(const char *title, bool ok, func_item_iterator_t *fii);
+
+  //重写此函数，判断是否可以使用已有的choose窗口还是新创建一个
+  virtual const void *get_obj_id(size_t *len) const
+  {
+    *len = strlen(title);
+    return title;
+  }
+
+  //重写该函数,用于设置显示列表的行数
+  virtual size_t idaapi get_count() const { return list.size(); }
+
+  //重写该函数,用于输出每一行内容
+  virtual void idaapi get_row(
+          qstrvec_t *cols,
+          int *icon_,
+          chooser_item_attrs_t *attrs,
+          size_t n) const;
+
+  //重写该函数,用于设置双击选项执行的动作
+  virtual cbret_t idaapi enter(size_t n)
+  {
+    if ( n &lt; list.size() )
+      jumpto(list[n]);
+    return cbret_t(); // nothing changed
+  }
+
+protected:
+  void build_list(bool ok, func_item_iterator_t *fii)
+  {
+    insn_t insn;
+    while ( ok )
+    {
+      ea_t ea = fii-&gt;current();
+      if ( decode_insn(&amp;insn, ea) &gt; 0 &amp;&amp; is_call_insn(insn) ) // a call instruction is found
+        list.push_back(ea);
+      ok = fii-&gt;next_code();
+    }
+  }
+};
+
+// column widths
+const int calls_chooser_t::widths_[] =
+{
+  CHCOL_HEX | 8,  // Address
+  32,             // Instruction
+};
+// column headers
+const char *const calls_chooser_t::header_[] =
+{
+  &quot;Address&quot;,      // 0
+  &quot;Instruction&quot;,  // 1
+};
+
+inline calls_chooser_t::calls_chooser_t(
+        const char *title_,
+        bool ok,
+        func_item_iterator_t *fii)
+  : chooser_t(0, qnumber(widths_), widths_, header_, title_),
+    list()
+{
+  CASSERT(qnumber(widths_) == qnumber(header_));
+
+  // build the list of calls
+  build_list(ok, fii);
+}
+
+void idaapi calls_chooser_t::get_row(
+        qstrvec_t *cols_,
+        int *,
+        chooser_item_attrs_t *,
+        size_t n) const
+{
+  // assert: n &lt; list.size()
+  ea_t ea = list[n];
+
+  // generate the line
+  qstrvec_t &amp;cols = *cols_;
+  cols[0].sprnt(&quot;%08a&quot;, ea);
+  generate_disasm_line(&amp;cols[1], ea, GENDSM_REMOVE_TAGS);
+  CASSERT(qnumber(header_) == 2);
+}
+
+bool idaapi run(size_t)
+{
+  qstring title;
+  // Let's display the functions called from the current one
+  // or from the selected area
+
+  // First we determine the working area
+
+  func_item_iterator_t fii;
+  bool ok;
+  ea_t ea1, ea2;
+  if ( read_range_selection(NULL, &amp;ea1, &amp;ea2) ) // the selection is present?
+  {
+    callui(ui_unmarksel);                       // unmark selection
+    title.sprnt(&quot;Functions called from %08a..%08a&quot;, ea1, ea2);
+    ok = fii.set_range(ea1, ea2);
+  }
+  else                                          // nothing is selected
+  {
+    func_t *pfn = get_func(get_screen_ea());    // try the current function
+    if ( pfn == NULL )
+    {
+      warning(&quot;Please position the cursor on a function or select an area&quot;);
+      return true;
+    }
+    ok = fii.set(pfn);
+    get_func_name(&amp;title, pfn-&gt;start_ea);
+    title.insert(&quot;Functions called from &quot;);
+  }
+
+  // now open the window
+  calls_chooser_t *ch = new calls_chooser_t(title.c_str(), ok, &amp;fii);
+  ch-&gt;choose(); // default cursor position is 0 (first row)
+  return true; //-V773
+}
+</code></pre>
+</article>
+          </div>
+          <div class="contribution-panel mobile-hide">
+              <a href="https://github.com/fjqisba/IDADoc/blob/master/IDASDK/(kernwin.hpp)&#20869;&#26680;&#19982;&#30028;&#38754;&#30456;&#20851;.md/#L1" title="Improve this Doc" class="fab btn-warning pull-right"><i class="glyphicon glyphicon-pencil"></i></a>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

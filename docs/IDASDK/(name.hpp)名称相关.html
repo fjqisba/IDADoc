@@ -93,6 +93,22 @@
 <p>参数一用于接收返回的名称。</p>
 <p>参数二为指定的地址。</p>
 <hr>
+<p>对名称进行解码，此函数一般用来解码C++的符号。</p>
+<p>如不清楚什么是解码，可以参考<a href="https://en.wikipedia.org/wiki/Name_mangling">Name mangling - Wikipedia</a></p>
+<pre><code class="lang-c++">qstring demangle_name(
+        const char *name,
+        uint32 disable_mask,
+        demreq_type_t demreq=DQT_FULL)
+int32  demangle_name(
+        qstring *out,
+        const char *name,
+        uint32 disable_mask,
+        demreq_type_t demreq=DQT_FULL);
+</code></pre>
+<p>第一个参数name是解码的文本</p>
+<p>第二个参数disable_mask是解码的一些选项，和IDA主程序Options-&gt;Demangled names里面的选项差不多。</p>
+<p>第三个参数demreq是想要得到的解码结果。</p>
+<hr>
 </article>
           </div>
           <div class="contribution-panel mobile-hide">
