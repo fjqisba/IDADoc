@@ -23,10 +23,19 @@ bool idaapi run(size_t)
 	//可以自行输入一个全局变量的地址...
 	ea_t GlobalVarAddr = 0x489085;
 
-	ea_t XrefAddr = get_first_dref_to(GlobalVarAddr);
+	//打印所有的代码交叉引用
+	ea_t XrefAddr = get_first_cref_to(GlobalVarAddr);
 	while (XrefAddr != BADADDR)
 	{
-		msg("XrefAddr:%a\n", XrefAddr);
+		msg("CodeXrefAddr:%a\n", XrefAddr);
+		XrefAddr = get_next_cref_to(GlobalVarAddr, XrefAddr);
+	}
+	
+	//打印所有的数据交叉引用
+	XrefAddr = get_first_dref_to(GlobalVarAddr);
+	while (XrefAddr != BADADDR)
+	{
+		msg("DataXrefAddr:%a\n", XrefAddr);
 		XrefAddr = get_next_dref_to(GlobalVarAddr, XrefAddr);
 	}
 	return true;
