@@ -1,0 +1,237 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>&#21453;&#27719;&#32534;&#24341;&#25806; </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="&#21453;&#27719;&#32534;&#24341;&#25806; ">
+    <meta name="generator" content="docfx 2.56.2.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="反汇编引擎">反汇编引擎</h1>
+
+<p>包含用来处理程序指令的反汇编相关函数。</p>
+<p>一条指令的反汇编由以下三步组成:</p>
+<ol>
+<li>指令分析:ana.cpp</li>
+<li>模拟分析:emu.cpp</li>
+<li>转换为反汇编文本:out.cpp</li>
+</ol>
+<hr>
+<p>判断指定地址的字节是否可以被解码为一条有效指令</p>
+<pre><code class="lang-c++">bool can_decode (ea_t ea)
+</code></pre>
+<p>参数一ea表示指定的线性地址。</p>
+<p>函数返回true表示可以被解码为有效指令。</p>
+<hr>
+<p>对一条指令进行反汇编，使用以下函数</p>
+<pre><code class="lang-c++">int decode_insn (insn_t *out, ea_t ea)
+</code></pre>
+<p>参数一out为返回的指令信息结果</p>
+<p>参数二ea为要进行反汇编的指令地址。</p>
+<p>返回值为指令的长度，如果为0则表示反汇编失败。</p>
+<hr>
+<p>IDA还提供了一个强大的逆反汇编功能，可以用以下函数对指定地址的上一条指令进行反汇编</p>
+<pre><code class="lang-c++">ea_t decode_prev_insn (insn_t *out, ea_t ea)
+</code></pre>
+<p>参数一out为返回的指令信息结果</p>
+<p>参数二ea表示要从哪个地址开始反汇编上一条指令</p>
+<p>返回值为上一条指令的地址，如果返回<strong>BADADDR</strong>表示反汇编失败。</p>
+<hr>
+<p><code>insn_t</code>代表着指令的反汇编结果，该结构体部分成员如下</p>
+<pre><code class="lang-c++">class insn_t
+{
+    ...
+    ea_t ea;			//该指令的线性地址
+    uint16 itype;		//内部指令类型,由IDP来定义
+    uint16 size;		//指令长度
+    ...
+    op_t ops[UA_MAXOP];		//操作数数组
+}
+</code></pre>
+<p>我们得到insn_t后，一般先通过判断itype来确定指令的类型，这个itype是个枚举类型，不同的处理器对应的枚举类型都不同，需要自行去allins.hpp中寻找。</p>
+<p>得到指令的类型后我们就可以通过解析ops数组来进一步得到详细的信息了。</p>
+<p>ops数组大小固定为8，但大部分指令的有效op并没有这么多。</p>
+<p>现假设在X86平台下，我们需要打印出某个函数里面call Register、call [MemAddr]这两种形式的全部指令。</p>
+<p>示例代码如下:</p>
+<pre><code class="lang-c++">#include &lt;ida.hpp&gt;
+#include &lt;idp.hpp&gt;
+#include &lt;loader.hpp&gt;
+#include &lt;ua.hpp&gt;
+#include &lt;allins.hpp&gt;
+
+qstring RegToName(uint16 reg)
+{
+	qstring ret;
+	switch (reg)
+	{
+	case 0x0:
+		ret = &quot;eax&quot;;
+		break;
+	case 0x1:
+		ret = &quot;ecx&quot;;
+		break;
+	case 0x2:
+		ret = &quot;edx&quot;;
+		break;
+	case 0x3:
+		ret = &quot;ebx&quot;;
+		break;
+	case 0x4:
+		ret = &quot;esp&quot;;
+		break;
+	case 0x5:
+		ret = &quot;ebp&quot;;
+		break;
+	case 0x6:
+		ret = &quot;esi&quot;;
+		break;
+	case 0x7:
+		ret = &quot;edi&quot;;
+		break;
+	default:
+		break;
+	}
+
+	return ret;
+}
+
+bool idaapi run(size_t)
+{
+	//假设函数之间的指令是连续的
+
+	//某个函数的起始地址
+	ea_t FuncStart = 0x00401180;
+	int iLen = 0;
+	do
+	{
+		insn_t ins;
+		iLen = decode_insn(&amp;ins, FuncStart);
+		if (ins.itype == NN_callni)
+		{
+			//call eax这类的指令
+			if (ins.ops[0].type == o_reg)
+			{
+				qstring Reg = RegToName(ins.ops[0].reg);
+				msg(&quot;[Instruction]:%a---call %s\n&quot;, FuncStart, Reg.c_str());
+				FuncStart += iLen;
+				continue;
+			}
+
+			//call [MemAddr]
+			if (ins.ops[0].type == o_mem)
+			{
+				msg(&quot;[Instruction]:%a---call [%a]\n&quot;, FuncStart, ins.ops[0].addr);
+				FuncStart += iLen;
+				continue;
+			}
+		}
+		FuncStart += iLen;
+	} while (iLen);
+	return true;
+}
+</code></pre>
+<hr>
+</article>
+          </div>
+          <div class="contribution-panel mobile-hide">
+              <a href="https://github.com/fjqisba/IDADoc/blob/master/IDASDK/(ua.hpp)&#21453;&#27719;&#32534;&#24341;&#25806;.md/#L1" title="Improve this Doc" class="fab btn-warning pull-right"><i class="glyphicon glyphicon-pencil"></i></a>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

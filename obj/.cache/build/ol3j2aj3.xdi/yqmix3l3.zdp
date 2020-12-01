@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>&#21453;&#27719;&#32534;&#24341;&#25806; </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="&#21453;&#27719;&#32534;&#24341;&#25806; ">
+    <meta name="generator" content="docfx 2.56.2.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="反汇编引擎" sourcefile="IDASDK/(ua.hpp)反汇编引擎.md" sourcestartlinenumber="1">反汇编引擎</h1>
+
+<p sourcefile="IDASDK/(ua.hpp)反汇编引擎.md" sourcestartlinenumber="3">包含用来处理程序指令的反汇编相关函数。</p>
+<p sourcefile="IDASDK/(ua.hpp)反汇编引擎.md" sourcestartlinenumber="7">一条指令的反汇编由以下三步组成:</p>
+<ol sourcefile="IDASDK/(ua.hpp)反汇编引擎.md" sourcestartlinenumber="9">
+<li sourcefile="IDASDK/(ua.hpp)反汇编引擎.md" sourcestartlinenumber="9">指令分析:ana.cpp</li>
+<li sourcefile="IDASDK/(ua.hpp)反汇编引擎.md" sourcestartlinenumber="10">模拟分析:emu.cpp</li>
+<li sourcefile="IDASDK/(ua.hpp)反汇编引擎.md" sourcestartlinenumber="11">转换为反汇编文本:out.cpp</li>
+</ol>
+<hr sourcefile="IDASDK/(ua.hpp)反汇编引擎.md" sourcestartlinenumber="13">
+<p sourcefile="IDASDK/(ua.hpp)反汇编引擎.md" sourcestartlinenumber="15">判断指定地址的字节是否可以被解码为一条有效指令</p>
+<pre><code class="lang-c++" sourcefile="IDASDK/(ua.hpp)反汇编引擎.md" sourcestartlinenumber="17">bool can_decode (ea_t ea)
+</code></pre>
+<p sourcefile="IDASDK/(ua.hpp)反汇编引擎.md" sourcestartlinenumber="21">参数一ea表示指定的线性地址。</p>
+<p sourcefile="IDASDK/(ua.hpp)反汇编引擎.md" sourcestartlinenumber="23">函数返回true表示可以被解码为有效指令。</p>
+<hr sourcefile="IDASDK/(ua.hpp)反汇编引擎.md" sourcestartlinenumber="25">
+<p sourcefile="IDASDK/(ua.hpp)反汇编引擎.md" sourcestartlinenumber="27">对一条指令进行反汇编，使用以下函数</p>
+<pre><code class="lang-c++" sourcefile="IDASDK/(ua.hpp)反汇编引擎.md" sourcestartlinenumber="29">int decode_insn (insn_t *out, ea_t ea)
+</code></pre>
+<p sourcefile="IDASDK/(ua.hpp)反汇编引擎.md" sourcestartlinenumber="33">参数一out为返回的指令信息结果</p>
+<p sourcefile="IDASDK/(ua.hpp)反汇编引擎.md" sourcestartlinenumber="35">参数二ea为要进行反汇编的指令地址。</p>
+<p sourcefile="IDASDK/(ua.hpp)反汇编引擎.md" sourcestartlinenumber="37">返回值为指令的长度，如果为0则表示反汇编失败。</p>
+<hr sourcefile="IDASDK/(ua.hpp)反汇编引擎.md" sourcestartlinenumber="39">
+<p sourcefile="IDASDK/(ua.hpp)反汇编引擎.md" sourcestartlinenumber="41">IDA还提供了一个强大的逆反汇编功能，可以用以下函数对指定地址的上一条指令进行反汇编</p>
+<pre><code class="lang-c++" sourcefile="IDASDK/(ua.hpp)反汇编引擎.md" sourcestartlinenumber="43">ea_t decode_prev_insn (insn_t *out, ea_t ea)
+</code></pre>
+<p sourcefile="IDASDK/(ua.hpp)反汇编引擎.md" sourcestartlinenumber="47">参数一out为返回的指令信息结果</p>
+<p sourcefile="IDASDK/(ua.hpp)反汇编引擎.md" sourcestartlinenumber="49">参数二ea表示要从哪个地址开始反汇编上一条指令</p>
+<p sourcefile="IDASDK/(ua.hpp)反汇编引擎.md" sourcestartlinenumber="51">返回值为上一条指令的地址，如果返回<strong sourcefile="IDASDK/(ua.hpp)反汇编引擎.md" sourcestartlinenumber="51">BADADDR</strong>表示反汇编失败。</p>
+<hr sourcefile="IDASDK/(ua.hpp)反汇编引擎.md" sourcestartlinenumber="53">
+<p sourcefile="IDASDK/(ua.hpp)反汇编引擎.md" sourcestartlinenumber="55"><code sourcefile="IDASDK/(ua.hpp)反汇编引擎.md" sourcestartlinenumber="55">insn_t</code>代表着指令的反汇编结果，该结构体部分成员如下</p>
+<pre><code class="lang-c++" sourcefile="IDASDK/(ua.hpp)反汇编引擎.md" sourcestartlinenumber="57">class insn_t
+{
+    ...
+    ea_t ea;			//该指令的线性地址
+    uint16 itype;		//内部指令类型,由IDP来定义
+    uint16 size;		//指令长度
+    ...
+    op_t ops[UA_MAXOP];		//操作数数组
+}
+</code></pre>
+<p sourcefile="IDASDK/(ua.hpp)反汇编引擎.md" sourcestartlinenumber="69">我们通过反汇编得到insn_t后，一般首先通过判断itype来确定指令的类型，这个itype是个枚举类型，不同的处理器对应的枚举类型都不同，需要自行去allins.hpp中寻找。</p>
+<p sourcefile="IDASDK/(ua.hpp)反汇编引擎.md" sourcestartlinenumber="71">得到指令的类型后我们就可以通过解析ops数组来进一步得到详细的信息了。</p>
+<p sourcefile="IDASDK/(ua.hpp)反汇编引擎.md" sourcestartlinenumber="73">ops数组大小固定为8，但大部分指令的有效op并没有这么多。</p>
+<p sourcefile="IDASDK/(ua.hpp)反汇编引擎.md" sourcestartlinenumber="75">现假设在X86平台下，我们要找到所有的call类型指令，包括call [MemAddr],call Register, call subxxx三种类型。</p>
+<p sourcefile="IDASDK/(ua.hpp)反汇编引擎.md" sourcestartlinenumber="77">示例代码如下:</p>
+<pre><code class="lang-c++" sourcefile="IDASDK/(ua.hpp)反汇编引擎.md" sourcestartlinenumber="79">#include &lt;ida.hpp&gt;
+#include &lt;idp.hpp&gt;
+#include &lt;loader.hpp&gt;
+#include &lt;ua.hpp&gt;
+
+
+</code></pre>
+</article>
+          </div>
+          <div class="contribution-panel mobile-hide">
+              <a href="https://github.com/fjqisba/IDADoc/blob/master/IDASDK/(ua.hpp)&#21453;&#27719;&#32534;&#24341;&#25806;.md/#L1" title="Improve this Doc" class="fab btn-warning pull-right"><i class="glyphicon glyphicon-pencil"></i></a>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
