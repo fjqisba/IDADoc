@@ -112,6 +112,11 @@ bool idaapi run(size_t)
 <hr>
 <p><strong>get_func_cmt</strong>/<strong>set_func_cmt</strong>函数用于获取和设置函数的注释。</p>
 <hr>
+<p>创建新的函数，可以使用如下函数，作用可以参考IDA在某处汇编代码处按下P键创建函数的功能。</p>
+<pre><code class="lang-c++">bool add_func(ea_t ea1, ea_t ea2=BADADDR);
+</code></pre>
+<p>参数一ea1为函数的起始地址</p>
+<p>参数二ea2为函数的结束地址，如果不填则表示自动探测函数范围。</p>
 </article>
           </div>
           <div class="contribution-panel mobile-hide">

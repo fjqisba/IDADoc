@@ -19,7 +19,7 @@ int 	msg(const char *format,...);
 
 ------
 
-弹框相关的函数有:
+弹框提示信息相关的函数有:
 
 ```c++
 //弹出一个错误窗口，然后退出IDA
@@ -31,6 +31,17 @@ void 	warning(const char *format,...);
 //弹出一个信息窗口
 void 	info(const char *format,...);
 ```
+
+------
+
+弹出一个等待框，或者隐藏当前的等待框
+
+```c++
+void show_wait_box(const char *format, ...);
+void hide_wait_box(void);
+```
+
+需要注意的是，如果多次调用show_wait_box函数，那么IDA会将当前文本存储到堆栈中然后显示出新的文本，因此show_wait_box和hide_wait_box函数必须成对出现，否则弹出的等待框会使得IDA界面无法进行任何交互。
 
 ------
 

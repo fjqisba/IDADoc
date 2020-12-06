@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>IDA&#33258;&#21160;&#20998;&#26512;&#22120; </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="IDA&#33258;&#21160;&#20998;&#26512;&#22120; ">
+    <meta name="generator" content="docfx 2.56.2.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="ida自动分析器" sourcefile="IDASDK/(auto.hpp)IDA自动分析器.md" sourcestartlinenumber="1">IDA自动分析器</h1>
+
+<p sourcefile="IDASDK/(auto.hpp)IDA自动分析器.md" sourcestartlinenumber="3">在auto.hpp中，包含了关于IDA自动分析引擎相关的一些函数。</p>
+<p sourcefile="IDASDK/(auto.hpp)IDA自动分析器.md" sourcestartlinenumber="5">当加载一个新的二进制文件的时候，IDA的自动分析引擎便会开始工作。</p>
+<p sourcefile="IDASDK/(auto.hpp)IDA自动分析器.md" sourcestartlinenumber="7">IDA的自动分析器包含多个分析队列，每个队列有各自的优先级。当所有的分析队列都为空的时候IDA就会结束自动分析。</p>
+<p sourcefile="IDASDK/(auto.hpp)IDA自动分析器.md" sourcestartlinenumber="11">通过头文件中提供的接口，我们可以对自动分析器进行一些控制。此接口一般来说用的比较少。。。。。。</p>
+<hr sourcefile="IDASDK/(auto.hpp)IDA自动分析器.md" sourcestartlinenumber="13">
+<p sourcefile="IDASDK/(auto.hpp)IDA自动分析器.md" sourcestartlinenumber="15">有的时候我们需要对自动分析引擎的状态进行判断，因为自动分析引擎的结果可能会影响到插件的使用。</p>
+<p sourcefile="IDASDK/(auto.hpp)IDA自动分析器.md" sourcestartlinenumber="17">这个时候可以使用<strong sourcefile="IDASDK/(auto.hpp)IDA自动分析器.md" sourcestartlinenumber="17">auto_is_ok</strong>，该函数作用为判断分析队列是否全部为空。</p>
+<pre><code class="lang-c++" sourcefile="IDASDK/(auto.hpp)IDA自动分析器.md" sourcestartlinenumber="19"> bool auto_is_ok(void);
+</code></pre>
+<p sourcefile="IDASDK/(auto.hpp)IDA自动分析器.md" sourcestartlinenumber="23">示例代码如下:</p>
+<pre><code class="lang-c++" sourcefile="IDASDK/(auto.hpp)IDA自动分析器.md" sourcestartlinenumber="25">#include &lt;ida.hpp&gt;
+#include &lt;idp.hpp&gt;
+#include &lt;loader.hpp&gt;
+#include &lt;kernwin.hpp&gt;
+#include &lt;auto.hpp&gt;
+
+bool idaapi run(size_t)
+{
+	if (!auto_is_ok() &amp;&amp; ask_yn(0, &quot;The autoanalysis has not finished yet.\nDo you want to continue?&quot;) &lt; 1)
+	{
+		return false;
+	}
+
+	//To do...执行功能
+	msg(&quot;[IDADemo]:Test\n&quot;);
+	return true;
+}
+</code></pre>
+<hr sourcefile="IDASDK/(auto.hpp)IDA自动分析器.md" sourcestartlinenumber="45">
+<p sourcefile="IDASDK/(auto.hpp)IDA自动分析器.md" sourcestartlinenumber="47">还有一种情况是我们通过其它的API，比如创建了某个函数或者修改了某个导入函数的参数类型，这会使得自动分析队列添加新的分析任务。</p>
+<p sourcefile="IDASDK/(auto.hpp)IDA自动分析器.md" sourcestartlinenumber="49">这个时候我们想要等待自动分析引擎结束工作后，再执行插件的后续步骤</p>
+<pre><code class="lang-c++" sourcefile="IDASDK/(auto.hpp)IDA自动分析器.md" sourcestartlinenumber="51">bool auto_wait(void);
+</code></pre>
+</article>
+          </div>
+          <div class="contribution-panel mobile-hide">
+              <a href="https://github.com/fjqisba/IDADoc/blob/master/IDASDK/(auto.hpp)IDA&#33258;&#21160;&#20998;&#26512;&#22120;.md/#L1" title="Improve this Doc" class="fab btn-warning pull-right"><i class="glyphicon glyphicon-pencil"></i></a>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

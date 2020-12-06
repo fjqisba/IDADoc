@@ -91,7 +91,7 @@ bool	msg_save(qstring &amp;path);
 int 	msg(const char *format,...);
 </code></pre>
 <hr>
-<p>弹框相关的函数有:</p>
+<p>弹框提示信息相关的函数有:</p>
 <pre><code class="lang-c++">//弹出一个错误窗口，然后退出IDA
 void 	error(const char *format,...);
 
@@ -101,6 +101,12 @@ void 	warning(const char *format,...);
 //弹出一个信息窗口
 void 	info(const char *format,...);
 </code></pre>
+<hr>
+<p>弹出一个等待框，或者隐藏当前的等待框</p>
+<pre><code class="lang-c++">void show_wait_box(const char *format, ...);
+void hide_wait_box(void);
+</code></pre>
+<p>需要注意的是，如果多次调用show_wait_box函数，那么IDA会将当前文本存储到堆栈中然后显示出新的文本，因此show_wait_box和hide_wait_box函数必须成对出现，否则弹出的等待框会使得IDA界面无法进行任何交互。</p>
 <hr>
 <p>跳转函数如下，其余的可选参数基本没什么用。。。。</p>
 <pre><code class="lang-c++">#define 	UIJMP_ACTIVATE   0x0001

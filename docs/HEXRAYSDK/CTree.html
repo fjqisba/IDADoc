@@ -1,0 +1,186 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>CTree </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="CTree ">
+    <meta name="generator" content="docfx 2.56.2.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="ctree">CTree</h1>
+
+<p>在理解CTree的核心之前，我们还需要认识以下类:</p>
+<p><strong>cfunc_t</strong>:cfunc_t中包含着和反编译代码相关的一些基础信息，cfunc_t中存在一个body成员，是一个cinsn_t类型，代表整个反编译函数的主体。</p>
+<pre><code class="lang-c++">struct cfunc_t
+{
+  ea_t entry_ea;             ///&lt; function entry address
+  cinsn_t body;              ///&lt; 函数的主体, 一定是个cblock类型
+  //...
+}
+</code></pre>
+<p><strong>cinsn_t</strong>:cinsn_t代表着用来组成CTree的每条语句，结构体内的节点主要和流程控制有关。</p>
+<pre><code class="lang-c++">struct cinsn_t : public citem_t
+{
+  union
+  {
+    cblock_t *cblock;   ///&lt; details of block-statement
+    cexpr_t *cexpr;     ///&lt; details of expression-statement
+    cif_t *cif;         ///&lt; details of if-statement
+    cfor_t *cfor;       ///&lt; details of for-statement
+    cwhile_t *cwhile;   ///&lt; details of while-statement
+    cdo_t *cdo;         ///&lt; details of do-statement
+    cswitch_t *cswitch; ///&lt; details of switch-statement
+    creturn_t *creturn; ///&lt; details of return-statement
+    cgoto_t *cgoto;     ///&lt; details of goto-statement
+    casm_t *casm;       ///&lt; details of asm-statement
+  };
+}
+</code></pre>
+<p><strong>cexpr_t</strong>:cexpr_t代表着用来组成每条语句的C语言表达式，可能也是最常用的一个类，里面存储着每条表达式的关键信息。</p>
+<pre><code class="lang-c++">struct cexpr_t : public citem_t
+{
+  union
+  {
+    cnumber_t *n;     ///&lt; used for \ref cot_num
+    fnumber_t *fpc;   ///&lt; used for \ref cot_fnum
+    struct
+    {
+      union
+      {
+        var_ref_t v;  ///&lt; used for \ref cot_var
+        ea_t obj_ea;  ///&lt; used for \ref cot_obj
+      };
+      int refwidth;   ///&lt; how many bytes are accessed? (-1: none)
+    };
+    struct
+    {
+      cexpr_t *x;     ///&lt; the first operand of the expression
+      union
+      {
+        cexpr_t *y;   ///&lt; the second operand of the expression
+        carglist_t *a;///&lt; argument list (used for \ref cot_call)
+        uint32 m;     ///&lt; member offset (used for \ref cot_memptr, \ref cot_memref)
+                      ///&lt; for unions, the member number
+      };
+      union
+      {
+        cexpr_t *z;   ///&lt; the third operand of the expression
+        int ptrsize;  ///&lt; memory access size (used for \ref cot_ptr, \ref cot_memptr)
+      };
+    };
+    cinsn_t *insn;    ///&lt; an embedded statement, they are prohibited
+                      ///&lt; at the final maturity stage (\ref CMAT_FINAL)
+    char *helper;     ///&lt; helper name (used for \ref cot_helper)
+    char *string;     ///&lt; string constant (used for \ref cot_str)
+  };
+  tinfo_t type;       ///&lt; expression type. must be carefully maintained
+}
+</code></pre>
+<p><strong>citem_t</strong>:citem_t是cinsn_t和cexpr_t的基类，用来存储一些通用的信息，例如地址、标签。</p>
+<p>为了更进一步地了解CTree，以下代码展示了如何去遍历函数的CTree节点，并且实现了一个C语句表达式的模板化引擎。</p>
+<pre><code class="lang-c++">
+</code></pre>
+</article>
+          </div>
+          <div class="contribution-panel mobile-hide">
+              <a href="https://github.com/fjqisba/IDADoc/blob/master/HEXRAYSDK/CTree.md/#L1" title="Improve this Doc" class="fab btn-warning pull-right"><i class="glyphicon glyphicon-pencil"></i></a>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
