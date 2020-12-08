@@ -162,7 +162,7 @@
       "output": {
         ".html": {
           "relative_path": "IDASDK/(struct.hpp)结构体类型.html",
-          "hash": "BlltXAWbJDW0Q7UQ3roS+Q=="
+          "hash": "Wt7meLKY3VXyUsIz4+SD4g=="
         }
       },
       "is_incremental": false,
@@ -314,7 +314,7 @@
           "can_incremental": true,
           "incrementalPhase": "build",
           "total_file_count": 21,
-          "skipped_file_count": 18
+          "skipped_file_count": 21
         },
         "TocDocumentProcessor": {
           "can_incremental": false,
