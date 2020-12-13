@@ -148,7 +148,101 @@
 </code></pre>
 <p><strong>citem_t</strong>:citem_t是cinsn_t和cexpr_t的基类，用来存储一些通用的信息，例如地址、标签。</p>
 <p>为了更进一步地了解CTree，以下代码展示了如何去遍历函数的CTree节点，并且实现了一个C语句表达式的模板化引擎。</p>
-<pre><code class="lang-c++">
+<pre><code class="lang-c++">#include &lt;hexrays.hpp&gt;
+
+qstring GetExprString(cexpr_t* pItem)
+{
+	qstring ret;
+
+	switch (pItem-&gt;op)
+	{
+	case cot_add:
+		return GetExprString(pItem-&gt;x) + &quot;+&quot; + GetExprString(pItem-&gt;y);
+	case cot_asg:
+		return GetExprString(pItem-&gt;x) + &quot;=&quot; + GetExprString(pItem-&gt;y);
+	case cot_asgadd:
+		return GetExprString(pItem-&gt;x) + &quot;+=&quot; + GetExprString(pItem-&gt;y);
+	case cot_band:
+		return  GetExprString(pItem-&gt;x) + &quot;&amp;&quot; + GetExprString(pItem-&gt;y);
+	case cot_call:
+		ret = &quot;call(&quot;;
+		for (unsigned int n = 0; n &lt; pItem-&gt;a-&gt;size(); ++n)
+		{
+			ret += GetExprString(&amp;pItem-&gt;a-&gt;at(n)) + &quot;,&quot;;
+		}
+		if (pItem-&gt;a-&gt;size())
+		{
+			ret.remove_last();
+		}
+		ret += &quot;)&quot;;
+		return ret;
+	case cot_cast:
+		return qstring(&quot;(cast)&quot;) + GetExprString(pItem-&gt;x);
+	case cot_eq:
+		return GetExprString(pItem-&gt;x) + &quot;==&quot; + GetExprString(pItem-&gt;y);
+	case cot_idx:
+		return GetExprString(pItem-&gt;x) + qstring(&quot;[&quot;) + GetExprString(pItem-&gt;y) + qstring(&quot;]&quot;);
+	case cot_mul:
+		return GetExprString(pItem-&gt;x) + &quot;*&quot; + GetExprString(pItem-&gt;y);
+	case cot_num:
+		ret = &quot;num&quot;;
+		break;
+	case cot_obj:
+		ret = &quot;obj&quot;;
+		break;
+	case cot_ref:
+		return qstring(&quot;&amp;&quot;) + GetExprString(pItem-&gt;x);
+	case cot_var:
+		ret = &quot;var&quot;;
+		break;
+	case cot_preinc:
+		return qstring(&quot;++&quot;) + GetExprString(pItem-&gt;x);
+		break;
+	case cot_ptr:
+		return qstring(&quot;*&quot;) + GetExprString(pItem-&gt;x);
+		break;
+	case cot_sub:
+		return GetExprString(pItem-&gt;x) + &quot;-&quot; + GetExprString(pItem-&gt;y);
+	case cot_tern:
+		return GetExprString(pItem-&gt;x) + &quot;?&quot; + GetExprString(pItem-&gt;y) + &quot;:&quot; + GetExprString(pItem-&gt;z);
+	case cot_ult:
+		return GetExprString(pItem-&gt;x) + &quot;&lt;&quot; + GetExprString(pItem-&gt;y);
+	case cot_xor:
+		return  GetExprString(pItem-&gt;x) + &quot;^&quot; + GetExprString(pItem-&gt;y);
+	default:
+		//遇到没解析过的类型自行补充就行了
+		msg(&quot;UnHandled Item Type...\n&quot;);
+		break;
+	}
+
+	return ret;
+}
+
+//--------------------------------------------------------------------------
+bool idaapi run(size_t)
+{
+	func_t* pfn = get_func(get_screen_ea());
+	hexrays_failure_t hf;
+	cfuncptr_t cfunc = decompile(pfn, &amp;hf, DECOMP_WARNINGS);
+	if (cfunc == NULL)
+	{
+		warning(&quot;error&quot;);
+		return true;
+	}
+
+	ctree_items_t&amp; vec_TreeItem = cfunc-&gt;treeitems;
+	for (unsigned int n = 0; n &lt; vec_TreeItem.size(); ++n)
+	{
+		//打印出所有的表达式吧
+		if (vec_TreeItem[n]-&gt;op == cit_expr)
+		{
+			qstring ExprPatterm = GetExprString(((cexpr_t*)vec_TreeItem[n])-&gt;x);
+			msg(&quot;%s\n&quot;, ExprPatterm.c_str());
+		}
+	}
+
+    return true;
+}
 </code></pre>
 </article>
           </div>

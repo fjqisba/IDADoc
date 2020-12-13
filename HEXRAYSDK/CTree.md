@@ -84,6 +84,99 @@ struct cexpr_t : public citem_t
 为了更进一步地了解CTree，以下代码展示了如何去遍历函数的CTree节点，并且实现了一个C语句表达式的模板化引擎。
 
 ```c++
+#include <hexrays.hpp>
 
+qstring GetExprString(cexpr_t* pItem)
+{
+	qstring ret;
+
+	switch (pItem->op)
+	{
+	case cot_add:
+		return GetExprString(pItem->x) + "+" + GetExprString(pItem->y);
+	case cot_asg:
+		return GetExprString(pItem->x) + "=" + GetExprString(pItem->y);
+	case cot_asgadd:
+		return GetExprString(pItem->x) + "+=" + GetExprString(pItem->y);
+	case cot_band:
+		return  GetExprString(pItem->x) + "&" + GetExprString(pItem->y);
+	case cot_call:
+		ret = "call(";
+		for (unsigned int n = 0; n < pItem->a->size(); ++n)
+		{
+			ret += GetExprString(&pItem->a->at(n)) + ",";
+		}
+		if (pItem->a->size())
+		{
+			ret.remove_last();
+		}
+		ret += ")";
+		return ret;
+	case cot_cast:
+		return qstring("(cast)") + GetExprString(pItem->x);
+	case cot_eq:
+		return GetExprString(pItem->x) + "==" + GetExprString(pItem->y);
+	case cot_idx:
+		return GetExprString(pItem->x) + qstring("[") + GetExprString(pItem->y) + qstring("]");
+	case cot_mul:
+		return GetExprString(pItem->x) + "*" + GetExprString(pItem->y);
+	case cot_num:
+		ret = "num";
+		break;
+	case cot_obj:
+		ret = "obj";
+		break;
+	case cot_ref:
+		return qstring("&") + GetExprString(pItem->x);
+	case cot_var:
+		ret = "var";
+		break;
+	case cot_preinc:
+		return qstring("++") + GetExprString(pItem->x);
+		break;
+	case cot_ptr:
+		return qstring("*") + GetExprString(pItem->x);
+		break;
+	case cot_sub:
+		return GetExprString(pItem->x) + "-" + GetExprString(pItem->y);
+	case cot_tern:
+		return GetExprString(pItem->x) + "?" + GetExprString(pItem->y) + ":" + GetExprString(pItem->z);
+	case cot_ult:
+		return GetExprString(pItem->x) + "<" + GetExprString(pItem->y);
+	case cot_xor:
+		return  GetExprString(pItem->x) + "^" + GetExprString(pItem->y);
+	default:
+		//遇到没解析过的类型自行补充就行了
+		msg("UnHandled Item Type...\n");
+		break;
+	}
+
+	return ret;
+}
+
+//--------------------------------------------------------------------------
+bool idaapi run(size_t)
+{
+	func_t* pfn = get_func(get_screen_ea());
+	hexrays_failure_t hf;
+	cfuncptr_t cfunc = decompile(pfn, &hf, DECOMP_WARNINGS);
+	if (cfunc == NULL)
+	{
+		warning("error");
+		return true;
+	}
+
+	ctree_items_t& vec_TreeItem = cfunc->treeitems;
+	for (unsigned int n = 0; n < vec_TreeItem.size(); ++n)
+	{
+		//打印出所有的表达式吧
+		if (vec_TreeItem[n]->op == cit_expr)
+		{
+			qstring ExprPatterm = GetExprString(((cexpr_t*)vec_TreeItem[n])->x);
+			msg("%s\n", ExprPatterm.c_str());
+		}
+	}
+
+    return true;
+}
 ```
-
