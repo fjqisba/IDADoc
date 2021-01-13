@@ -266,6 +266,42 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "IDC/IDC脚本简介.md",
+      "output": {
+        ".html": {
+          "relative_path": "IDC/IDC脚本简介.html",
+          "hash": "ogcncffMYT3mgB2eo6JHfw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "IDC/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "IDC/toc.html",
+          "hash": "6JHyFVSuEi1ydzsNZ8ncNw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "IDC/遍历函数.md",
+      "output": {
+        ".html": {
+          "relative_path": "IDC/遍历函数.html",
+          "hash": "P5eiWA8zsPo4aq9k0ojtcA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "README.md",
       "output": {
         ".html": {
@@ -306,7 +342,7 @@
       "output": {
         ".html": {
           "relative_path": "toc.html",
-          "hash": "u+MIqTaIoohUHspNoPKOJw=="
+          "hash": "QBxOxYaZq6YfnxBzhVXIkQ=="
         }
       },
       "is_incremental": false,
@@ -325,8 +361,8 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": true,
           "incrementalPhase": "build",
-          "total_file_count": 22,
-          "skipped_file_count": 22
+          "total_file_count": 24,
+          "skipped_file_count": 23
         },
         "TocDocumentProcessor": {
           "can_incremental": false,

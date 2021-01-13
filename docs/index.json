@@ -99,6 +99,16 @@
     "title": "文件读写",
     "keywords": "文件读写 官方是不建议我们在插件中使用C语言的文件读写接口的。 读写文件相关接口定义在<diskio.hpp>和<fpro.h>中 idadir 函数用于获取IDA自身相关目录 const char *ida_export idadir(const char *subdir); subdir其实只有固定的选择，有以下几种 #define CFG_SUBDIR \"cfg\" #define IDC_SUBDIR \"idc\" #define IDS_SUBDIR \"ids\" #define IDP_SUBDIR \"procs\" #define LDR_SUBDIR \"loaders\" #define SIG_SUBDIR \"sig\" #define TIL_SUBDIR \"til\" #define PLG_SUBDIR \"plugins\" 官方提供了一组几乎和C语言完全一样的接口，供我们读写文件 FILE *qfopen(const char *file, const char *mode); ssize_t qfread(FILE *fp, void *buf, size_t n); ssize_t qfwrite(FILE *fp, const void *buf, size_t n); qoff64_t qftell(FILE *fp); int qfseek(FILE *fp, qoff64_t offset, int whence); int qfclose(FILE *fp); int qflush(FILE *fp); ...... 这里也就不做过多介绍了。 此外，IDA还封装了一些额外的API供我们使用，毕竟光上面那些根本不够用 ssize_t qgetline (qstring *buf, FILE *fp) 此函数一般用来逐行读取文本。"
   },
+  "IDC/IDC脚本简介.html": {
+    "href": "IDC/IDC脚本简介.html",
+    "title": "IDC脚本简介",
+    "keywords": "IDC脚本简介 IDC脚本是由IDA官方提供并维护的功能，语法和C语言比较相似。 在IDA中，我们可以点击菜单File -> Script File来执行一个IDC脚本。 点击菜单File -> Script Command可以开启一个脚本执行窗口，我们可以在这里编写脚本测试运行。 例如编写下列代码后点击Run按钮。 msg(\"Hello World\\n\"); IDA的Output窗口便会输出文本结果。 因为是脚本型的语言，如果我们没有定义函数，脚本则默认从头开始执行。 如果我们想要定义函数，那么就得使用下面这种方式: static GetText() { auto Text=\"Hello World\\n\"; return Text; } static main() { msg(GetText()); } 事实上，函数的声明都遵守以下格式: static func(arg1,arg2,arg3) 而且由于IDC脚本的变量都是 auto 通用类型，一个变量可以保存任何类型的数据，因此函数没必要定义返回类型，所有函数默认都有返回值。 了解了以上常识，就能解决大部分编写脚本的需求了，下面是一些特殊的点: 全局变量使用 extern 关键字命名，且不可进行初始化赋值 不支持C语言中的switch case语句，这一点和Python很像。"
+  },
+  "IDC/遍历函数.html": {
+    "href": "IDC/遍历函数.html",
+    "title": "遍历函数",
+    "keywords": "遍历函数 如何使用IDC脚本遍历程序中的函数呢? 使用get_next_func这个函数即可，函数原型如下: long get_next_func(long ea); 该函数参数是某个函数中的任意地址，返回值为下一个函数的地址，我们传递0就能获取到第一个函数的地址了。 auto funcAddr=0; while(1){ funcAddr=get_next_func(funcAddr); if(funcAddr==-1){ break; } msg(\"%X\\n\",funcAddr); }"
+  },
   "index.html": {
     "href": "index.html",
     "title": "IDA插件开发",

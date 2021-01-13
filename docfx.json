@@ -4,6 +4,8 @@
       {
         "files": [
 		  "about/*.md",
+		  "IDC/**/*.yml",
+          "IDC/**/*.md",
           "HEXRAYSDK/**/*.yml",
           "HEXRAYSDK/**/*.md",
 		  "IDASDK/**/*.md",

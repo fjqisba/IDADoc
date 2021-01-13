@@ -2,6 +2,9 @@
   href: IDASDK/
 - name: HexRays SDK
   href: HEXRAYSDK/
+- name: IDC脚本
+  href: IDC/
 - name: 关于
   href: about/
   homepage: about/index.md
+  
