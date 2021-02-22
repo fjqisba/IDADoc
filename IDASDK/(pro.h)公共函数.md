@@ -43,3 +43,32 @@ qstring、qvector、qlist、qstack，为了IDA的插件稳定性考虑，如果�
 
 ------
 
+改变文本字符串的编码，函数为change_codepage
+
+```c++
+bool change_codepage(qstring *out,const char *in,int incp,int outcp);
+```
+
+参数一out为返回的文本内容结果
+
+参数二in为输入的文本内容
+
+参数三incp为输入的文本的编码
+
+参数四outcp为输出的文本的编码
+
+返回值表示转换是否成功。
+
+IDA特意为我们封装了一个ASCII转换为UTF8的函数，如下
+
+```c++
+bool acp_utf8(qstring *out, const char *in)
+{
+  return change_codepage(out, in, CP_ACP, CP_UTF8);
+}
+```
+
+因为在IDA中用于显示在界面上的文本是基于UTF8的，因此如果我们想要在IDA的界面上显示中文，需使用此函数将ASCII文本转换为UTF8编码。
+
+------
+

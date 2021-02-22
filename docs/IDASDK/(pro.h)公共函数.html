@@ -8,7 +8,7 @@
     <title>&#20844;&#20849;&#20989;&#25968; </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="&#20844;&#20849;&#20989;&#25968; ">
-    <meta name="generator" content="docfx 2.56.2.0">
+    <meta name="generator" content="docfx 2.56.6.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -59,11 +59,11 @@
       <div class="container body-content">
         
         <div id="search-results">
-          <div class="search-list"></div>
+          <div class="search-list">Search Results for <span></span></div>
           <div class="sr-items">
             <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
           </div>
-          <ul id="pagination"></ul>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
         </div>
       </div>
       <div role="main" class="container body-content hide-when-search">
@@ -106,6 +106,22 @@ int 	qsscanf (const char *input, const char *format,...);
 <hr>
 <p>IDA还重新实现了STL模板库里面的一些类，例如</p>
 <p>qstring、qvector、qlist、qstack，为了IDA的插件稳定性考虑，如果我们需要用到STL库，建议还是使用IDA提供的这些。不过IDA似乎没有提供map。。。。。，</p>
+<hr>
+<p>改变文本字符串的编码，函数为change_codepage</p>
+<pre><code class="lang-c++">bool change_codepage(qstring *out,const char *in,int incp,int outcp);
+</code></pre>
+<p>参数一out为返回的文本内容结果</p>
+<p>参数二in为输入的文本内容</p>
+<p>参数三incp为输入的文本的编码</p>
+<p>参数四outcp为输出的文本的编码</p>
+<p>返回值表示转换是否成功。</p>
+<p>IDA特意为我们封装了一个ASCII转换为UTF8的函数，如下</p>
+<pre><code class="lang-c++">bool acp_utf8(qstring *out, const char *in)
+{
+  return change_codepage(out, in, CP_ACP, CP_UTF8);
+}
+</code></pre>
+<p>因为在IDA中用于显示在界面上的文本是基于UTF8的，因此如果我们想要在IDA的界面上显示中文，需使用此函数将ASCII文本转换为UTF8编码。</p>
 <hr>
 </article>
           </div>
