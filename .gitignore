@@ -2,7 +2,7 @@
 *.d
 
 tools/
-obj/
+obj
 # Compiled Object files
 *.slo
 *.lo
