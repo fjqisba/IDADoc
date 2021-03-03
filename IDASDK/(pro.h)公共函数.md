@@ -39,7 +39,7 @@ int 	qsscanf (const char *input, const char *format,...);
 
 IDA还重新实现了STL模板库里面的一些类，例如
 
-qstring、qvector、qlist、qstack，为了IDA的插件稳定性考虑，如果我们需要用到STL库，建议还是使用IDA提供的这些。不过IDA似乎没有提供map。。。。。，
+qstring、qvector、qlist、qstack，大多数情况下是可以替代STL库的，在无法满足我们需求的情况下可以使用STL库，例如IDA没有提供std::map模板类。
 
 ------
 

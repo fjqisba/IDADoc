@@ -150,7 +150,7 @@
       "output": {
         ".html": {
           "relative_path": "IDASDK/(pro.h)公共函数.html",
-          "hash": "/i+tHH6yvMW/umpHOXv82w=="
+          "hash": "YZT9DzqKYlK3NbWq2ThVBQ=="
         }
       },
       "is_incremental": false,
@@ -234,7 +234,7 @@
       "output": {
         ".html": {
           "relative_path": "IDASDK/toc.html",
-          "hash": "jOIAWENf8+aZlsdZzj/4IA=="
+          "hash": "MS12Uvcw+K204Zc+qkaaWQ=="
         }
       },
       "is_incremental": false,
@@ -259,6 +259,18 @@
         ".html": {
           "relative_path": "IDASDK/文件读写.html",
           "hash": "H4RJx2wXWIn6TWB/8OHqVQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "IDASDK/注册菜单.md",
+      "output": {
+        ".html": {
+          "relative_path": "IDASDK/注册菜单.html",
+          "hash": "32ndqe0ag7JgVoPlYtq2sA=="
         }
       },
       "is_incremental": false,
@@ -361,8 +373,8 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": true,
           "incrementalPhase": "build",
-          "total_file_count": 24,
-          "skipped_file_count": 23
+          "total_file_count": 25,
+          "skipped_file_count": 25
         },
         "TocDocumentProcessor": {
           "can_incremental": false,
